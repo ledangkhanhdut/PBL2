@@ -4,15 +4,15 @@ using namespace std;
 class Person
 {
 private:
+    unsigned int Id;
     string Name;
     int age;
     string Phone_Number;
     string address;
     char gender;
-
 public:
-    Person(const string &name, int age, const string &phone, const string &address, char gender);
+    Person(unsigned int Id, const string & = "", int = 0, const string & = "", const string & = "", char = ' ');
     Person(const Person &);
-    void update_Infomation(const Person &);
+    void update_Information(const Person &);
     ~Person();
 };
