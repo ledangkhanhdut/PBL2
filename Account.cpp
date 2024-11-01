@@ -81,7 +81,7 @@ bool Account::Register(const string &username, const string &pass, int role)
     return true;
 }
 
-void Account::Change_Pass(const string &Pass)
+void Account::Set_Pass(const string &Pass)
 {
     string NewPass;
     cout << "Nhap NewPass:";
@@ -124,7 +124,7 @@ bool Account::Remove_Acc(const string &user)
     out_file.close();
     return 1;
 }
-int Account::get_Id()
+unsigned Account::get_Id() const
 {
     return this->ID;
 }
@@ -132,6 +132,11 @@ int Account::get_Role()
 {
     return this->Role;
 }
+string  Account::get_Pass() const 
+{
+    return this->Pass;
+}
+
 Account::~Account()
 {
 }

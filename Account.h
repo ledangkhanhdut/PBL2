@@ -17,10 +17,11 @@ public:
   Account(const Account &);
   bool Register(const string &, const string &, int);
   bool Login(const string &, const string &);
-  void Change_Pass(const string &);
   bool Compare(const string &, const string &);
   bool Remove_Acc(const string &);
-  int get_Id();
+  unsigned int get_Id() const ;
   int get_Role();
+  string get_Pass() const;
+  void Set_Pass(const string &);
   ~Account();
 };
