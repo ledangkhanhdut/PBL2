@@ -26,6 +26,7 @@ bool Account::Login(const string &User, const string &Pass)
     return false;
 }
 
+
 Account::Account(const int &id, const string &name, const string &pass, int role)
 {
     this->ID = id;
@@ -66,16 +67,20 @@ bool Account::Register(const string &username, const string &pass, int role)
             break;
         }
     
-    if (tmp == 0) List_Acc.push_back(Account(List_Acc.back().get_Id() + 1, username, pass, role));
+    if (tmp == 0) {
+        List_Acc.push_back(Account(List_Acc.back().get_Id() + 1, username, pass, role));
+        (*this) = List_Acc[Size];
+        }
     else {
          new_Acc = Account(List_Acc[tmp].ID - 1, username,pass,role);
+         (*this) = new_Acc;
          List_Acc.insert(List_Acc.begin() + tmp,new_Acc);
         }
     Size++;
     ofstream out_file(file_Acc);
     out_file << Size << std::endl;
     for (const auto &acc : List_Acc)
-        out_file << acc.ID << " " << acc.Username << " " << acc.Pass << " " << acc.Role << std::endl;
+        out_file << acc.ID << " " << acc.Username << " " << acc.Pass << " " << acc.Role << endl;
     out_file.close();
 
     return true;

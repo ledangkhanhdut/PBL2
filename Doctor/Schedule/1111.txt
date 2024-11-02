@@ -1,0 +1,18 @@
+11/12/2024
+7-8 ID*benhnhan 1/2/3 Medical/Medical/Medical Nho-rang-so-bao-nhieu       
+8-9 ID*benhnhan 1/2/3 Medical/Medical/Medical Lấy-Tủy-Răng-C1  
+9-10 0
+10-11 0
+2-3 0
+3-4 0
+4-5 0
+10/12/2024
+7-8 ID*benhnhan 1/2/3 Medical/Medical/Medical Nho-rang-so-bao-nhieu       
+8-9 ID*benhnhan 1/2/3 Medical/Medical/Medical Lấy-Tủy-Răng-C1  
+9-10 0
+10-11 0
+2-3 0
+3-4 0
+4-5 0
+
+g++ pbl.cpp person.cpp manager.cpp doctor.cpp account.cpp -o pbl.exe
