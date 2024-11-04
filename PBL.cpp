@@ -425,7 +425,7 @@ void update_Age(Doctor &tmp)
     bool check = true;
     do
     {
-        cout << "Tuoi hien tai : " << tmp.<< endl;
+        cout << "Tuoi hien tai : " << tmp.get_Age()<< endl;
         cout << "1.Thay doi tuoi." << endl;
         cout << "2.Thoat" << endl;
         cout << "Nhap lua chon: ";
@@ -447,7 +447,8 @@ void update_Age(Doctor &tmp)
                     check = false;
                     cout << "Tuoi khong hop le!" << endl;
                 }
-            } while (!check) break;
+            } while (!check);
+            break;
         case 2:
             return;
         default:

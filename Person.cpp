@@ -41,13 +41,13 @@ string  Person::get_Name() const {
 void  Person::set_Name(const string & name){
     this->Name =  name;
 }
-int get_Age() const {
+int Person::get_Age() const {
     return this->age;
 }
-void set_Age(int age){
-    this->age  = age;
+void Person::set_Age(int age){
+    
+      this->age= age;
 }
-
 
 string   Person::get_Phone_Number() const {
     return this->Phone_Number;
