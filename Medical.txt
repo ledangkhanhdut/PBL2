@@ -1,0 +1,4 @@
+Paracetalmon 1000
+Vitamin_C 200
+Khang_Sinh 2000
+Ha_Sot 400

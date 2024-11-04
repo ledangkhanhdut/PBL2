@@ -1,0 +1,16 @@
+11/12/2024
+7-8 1232 Ten/Benh/Nhan/ 1/2/3 Medical Nho-rang-so-bao-nhieu  Y     
+8-9 1233 Ten/Benh/Nhan 1/2/3 Medical Lấy-Tủy-Răng-C1  Y
+9-10 0 0 0 0 0 N
+10-11 0 0 0 0 0 N
+2-3 0 0 0 0 0 N
+3-4 0 0 0 0 0 N
+4-5 0 0 0 0 0 N
+10/12/2024
+7-8 1231 Ten/Benh/Nhan/ 1/2/3 Medical Nho-rang-so-bao-nhieu  Y     
+8-9 1323 Ten/Benh/Nhan 1/2/3 Medical Lấy-Tủy-Răng-C1  Y
+9-10 0 0 0 0 0 N
+10-11 0 0 0 0 0 N
+2-3 0 0 0 0 0 N
+3-4 0 0 0 0 0 N
+4-5 0 0 0 0 0 N
