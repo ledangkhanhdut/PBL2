@@ -26,7 +26,6 @@ bool Account::Login(const string &User, const string &Pass)
     return false;
 }
 
-
 Account::Account(const int &id, const string &name, const string &pass, int role)
 {
     this->ID = id;
@@ -50,7 +49,7 @@ bool Account::Register(const string &username, const string &pass, int role)
     vector<Account> List_Acc;
     string tmp_User, tmp_Pass;
     Account new_Acc;
-    
+
     while (in_file >> tmp_Id >> tmp_User >> tmp_Pass >> tmp_Role)
     {
         List_Acc.push_back(Account(tmp_Id, tmp_User, tmp_Pass, tmp_Role)); // Thêm vào vector
@@ -66,16 +65,18 @@ bool Account::Register(const string &username, const string &pass, int role)
             tmp = i;
             break;
         }
-    
-    if (tmp == 0) {
+
+    if (tmp == 0)
+    {
         List_Acc.push_back(Account(List_Acc.back().get_Id() + 1, username, pass, role));
         (*this) = List_Acc[Size];
-        }
-    else {
-         new_Acc = Account(List_Acc[tmp].ID - 1, username,pass,role);
-         (*this) = new_Acc;
-         List_Acc.insert(List_Acc.begin() + tmp,new_Acc);
-        }
+    }
+    else
+    {
+        new_Acc = Account(List_Acc[tmp].ID - 1, username, pass, role);
+        (*this) = new_Acc;
+        List_Acc.insert(List_Acc.begin() + tmp, new_Acc);
+    }
     Size++;
     ofstream out_file(file_Acc);
     out_file << Size << std::endl;
@@ -88,17 +89,14 @@ bool Account::Register(const string &username, const string &pass, int role)
 
 void Account::Set_Pass(const string &Pass)
 {
-    string NewPass;
-    cout << "Nhap NewPass:";
-    cin >> NewPass;
-    this->Pass = NewPass;
+    this->Pass = Pass;
 }
 bool Account::Compare(const string &User, const string &Pass)
 {
     return (((this->Username == User) && (this->Pass == Pass)));
 }
 
-bool Account::Remove_Acc(const string &user)
+bool Account::Remove_Acc(const string &user,int role)
 {
     ifstream in_file(file_Acc);
     int Size, tmp_Id, tmp_Role, tmp = 0, tmp_2 = -1;
@@ -109,7 +107,7 @@ bool Account::Remove_Acc(const string &user)
     while (in_file >> tmp_Id >> tmp_User >> tmp_Pass >> tmp_Role)
     {
         List_Acc.push_back(Account(tmp_Id, tmp_User, tmp_Pass, tmp_Role));
-        if (tmp_User == user)
+        if (tmp_User == user && role == tmp_Role)
         {
             tmp_2 = tmp;
         }
@@ -119,6 +117,8 @@ bool Account::Remove_Acc(const string &user)
 
     if (tmp_2 == -1)
         return 0;
+     /*(*this) tra ve id cho manager */   
+    (*this) = List_Acc[tmp_2];
     List_Acc.erase(List_Acc.begin() + tmp_2);
 
     ofstream out_file(file_Acc);
@@ -137,11 +137,31 @@ int Account::get_Role()
 {
     return this->Role;
 }
-string  Account::get_Pass() const 
+string Account::get_Pass() const
 {
     return this->Pass;
 }
+void Account::Change_Pass()
+{
+    ifstream file(file_Acc);
+    int Size;
+    file >> Size;
+    Account List_Acc[Size];
+    for (int i = 0; i < Size; i++)
+    {
+        file >> List_Acc[i].ID >> List_Acc[i].Username >> List_Acc[i].Pass >> List_Acc[i].Role;
+        if (this->ID == List_Acc[i].ID)
+        {
+            List_Acc[i].Pass = this->Pass;
+        }
+    }
 
+    ofstream out_file(file_Acc);
+    out_file << Size << endl;
+    for (int i = 0; i < Size; i++)
+        out_file << List_Acc[i].ID << " " << List_Acc[i].Username << " " << List_Acc[i].Pass << " " << List_Acc[i].Role << endl;
+    out_file.close();
+}
 Account::~Account()
 {
 }

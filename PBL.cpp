@@ -1,42 +1,53 @@
-// #include "Person.h"
+
+#include "Global_Function.h"
 #include "Manager.h"
 #include "doctor.h"
 #include "Schedule.h"
 #include "Medical.h"
-// #include "Patient.h"
+#include "Patient.h"
+#include "Service.h"
 #include <string>
-#include <chrono>
-#include <iomanip>
 #include <cstdlib>
 
 #define Sokhunggio 7
+#define file_Service "Service.txt"
 
 void Home();
 void Login();
 void Register();
+
 void Management_interface(Account &);
-void Doctor_Workspace(Account &);
 void Add_Doctor(Manager &);
 void Add_Cashier(Manager &);
 void Add_Patient(Manager &);
 void Remove_Doctor(Manager &);
 void Remove_Cashier(Manager &);
 void Remove_Patient(Manager &);
+
+void Doctor_Workspace(Account &);
+void Read_information_doctor(Doctor &);
 void Change_Information_Doctor(Doctor &, Account &);
-void change_Password_Doctor(Account &);
+void change_Pass(Account &);
+void update_Name(Person &);
+void update_Gender(Person &);
+void update_Phone(Person &);
+void update_Address(Person &);
+void update_Age(Person &);
+void update_Experience(Doctor &);
+// void update_Time_Working(Doctor &;
 
-void update_Name(Doctor &);
-void update_Gender(Doctor &);
-void update_Phone(Doctor &);
-void update_Address(Doctor &);
-void update_Age(Doctor &);
-
+void Change_File_infor_Doctor(Doctor &);
 void View_Schedule(const Doctor &);
 void Show_Schedule(Schedule &);
+void Change_File_Schedule(Schedule[], const Doctor &, string &);
 void Change_About(Schedule &);
 void Change_Medical(Schedule &);
-void Design();
-bool isNumeric(const string &);
+void Change_Status(Schedule &);
+
+void Patient_Workspace(Account &);
+void Booking_Schedule(Patient &);
+void Change_Infor_Patient(Patient &, Account &);
+void Change_File_infor_Patient(Patient &);
 // bool isValidDate(int, int, int);
 
 int main()
@@ -51,10 +62,11 @@ void Home()
     int choice;
     do
     {
-        cout << "Chao mung ban da chon chuc nang Home" << endl;
-        cout << "1.Dang Ky" << endl;
-        cout << "2.Dang Nhap" << endl;
-        cout << "3.Thoat." << endl;
+        cout << "Chào mừng bạn đến với giao diện trang chính." << endl;
+        cout << "1.Đăng Ký" << endl;
+        cout << "2.Đăng Nhập" << endl;
+        cout << "3.Thoát." << endl;
+        cout << "Hãy nhập yêu cầu của bạn :";
         cin >> choice;
         switch (choice)
         {
@@ -69,61 +81,8 @@ void Home()
             return;
             break;
         }
-    } while (choice != 2);
+    } while (choice != 3);
 }
-
-bool isNumeric(const string &str)
-{
-    for (char c : str)
-    {
-        if (!isdigit(c))
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void getCurrentDate()
-{
-    auto now = std::chrono::system_clock::now();                      // Lấy thời gian hiện tại
-    std::time_t now_time = std::chrono::system_clock::to_time_t(now); // Chuyển đổi thành time_t
-
-    std::tm *ltm = std::localtime(&now_time);
-
-    std::cout << "VD:Ngày hiện tại: "
-              << std::put_time(ltm, "%d/%m/%Y") << std::endl; // Định dạng ngày tháng
-}
-// bool isValidDate(int day, int month, int year) {
-//     if (month < 1 || month > 12) {
-//         return false;
-//     }
-
-//     int daysInMonth;
-//     switch (month) {
-//         case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-//             daysInMonth = 31;
-//             break;
-//         case 4: case 6: case 9: case 11:
-//             daysInMonth = 30;
-//             break;
-//         case 2:
-//             if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-//                 daysInMonth = 29;
-//             } else {
-//                 daysInMonth = 28;
-//             }
-//             break;
-//         default:
-//             return false;
-//     }
-
-//     return (day >= 1 && day <= daysInMonth);
-// }
-void Design()
-{
-}
-
 void Register()
 {
     Account tmp;
@@ -136,9 +95,18 @@ void Register()
         cout << "Mat khau: ";
         cin >> pass;
         check = tmp.Register(user, pass, 4);
-        if (check == false)
+        if (!check)
             cout << "Tai khoan da ton tai" << endl;
-    } while (check == false);
+    } while (!check);
+
+    /*Tao file thong tin va lich cho benh nhan*/
+    string filename = "Patient/information/" + to_string(tmp.get_Id()) + ".txt";
+    ofstream file(filename);
+    file.close();
+    filename = "Patient/Schedule/" + to_string(tmp.get_Id()) + ".txt";
+    ofstream file2(filename);
+    file2.close();
+
     cout << "Tao tai khoan thanh cong." << endl;
 }
 void Login()
@@ -170,6 +138,10 @@ void Login()
         Doctor_Workspace(tmp);
         break;
     case 3:
+
+        break;
+    case 4:
+        Patient_Workspace(tmp);
         break;
     default:
         break;
@@ -187,7 +159,7 @@ void Management_interface(Account &Acc)
         cout << "4.Xóa Thu Ngan" << endl;
         cout << "5.Them benh nhan" << endl;
         cout << "6.Xóa benh nhan" << endl;
-        cout << " 7.Thoat" << endl;
+        cout << "7.Thoat" << endl;
         cout << "Hay nhap yeu cau cua ban: ";
         cin >> choice;
         switch (choice)
@@ -221,6 +193,7 @@ void Management_interface(Account &Acc)
 void Add_Doctor(Manager &Admin)
 {
     string user, pass;
+
     cout << "Tai khoan: ";
     cin >> user;
     cout << "Mat khau: ";
@@ -242,9 +215,10 @@ void Remove_Doctor(Manager &Admin)
         cin >> user;
         check = Admin.Remove_Doctor(user);
         if (check)
-            cout << "Xoa tai khoan thanh cong";
+            cout << "Xoa tai khoan thanh cong" << endl;
+
         else
-            cout << "Xoa tai khoan that bai";
+            cout << "Xoa tai khoan that bai" << endl;
     } while (check = false);
 }
 void Add_Cashier(Manager &Admin)
@@ -275,25 +249,25 @@ void Remove_Patient(Manager &Admin)
         cin >> user;
         check = Admin.Remove_Patient(user);
         if (check)
-            cout << "Xoa tai khoan thanh cong";
+            cout << "Xoa tai khoan thanh cong." << endl;
         else
-            cout << "Xoa tai khoan that bai";
+            cout << "Xoa tai khoan that bai." << endl;
     } while (check = false);
 }
-
 void Doctor_Workspace(Account &acc)
 {
     int choice;
     Doctor tmp;
 
     tmp.set_Id(acc.get_Id());
+    Read_information_doctor(tmp);
     do
     {
         system("cls");
         cout << "1.Sua thong tin ca nhan." << endl;
         cout << "2.Lich lam viec." << endl;
         cout << "3.Thoat." << endl;
-        cout << "Nhap yeu cau cua ban.";
+        cout << "Nhap yeu cau cua ban: ";
         cin >> choice;
         switch (choice)
         {
@@ -313,6 +287,35 @@ void Doctor_Workspace(Account &acc)
     } while (choice != 3);
 }
 
+void Read_information_doctor(Doctor &tmp)
+{
+    string filename = "Doctor/information/" + to_string(tmp.get_ID()) + ".txt";
+    ifstream file(filename);
+    if (!file)
+    {
+        cout << "File not found." << endl;
+        return;
+    }
+    string tmp_string;
+    unsigned int tmp_int;
+    char tmp_char;
+    file >> tmp_int;
+    file >> tmp_string;
+    tmp.set_Name(tmp_string);
+    file >> tmp_int;
+    tmp.set_Age(tmp_int);
+    file >> tmp_char;
+    tmp.set_Gender(tmp_char);
+    file >> tmp_string;
+    tmp.set_Phone_Number(tmp_string);
+    file >> tmp_string;
+    tmp.set_Address(tmp_string);
+    file >> tmp_string;
+    tmp.set_Time_Working(tmp_string);
+    file >> tmp_string;
+    tmp.set_Exp(tmp_string);
+    file.close();
+}
 void Change_Information_Doctor(Doctor &tmp, Account &acc)
 {
     int choice = 0;
@@ -320,7 +323,7 @@ void Change_Information_Doctor(Doctor &tmp, Account &acc)
     {
         cout << "1.Doi mat khau." << endl;
         cout << "2.Cap nhat ho va ten ." << endl;
-        cout << "3.Cap nhat ngay sinh. " << endl;
+        cout << "3.Cap nhat tuoi. " << endl;
         cout << "4.Cap nhat gioi tinh." << endl;
         cout << "5.Cap nhat so dien thoai." << endl;
         cout << "6.Cap nhat dia chi." << endl;
@@ -332,13 +335,13 @@ void Change_Information_Doctor(Doctor &tmp, Account &acc)
         switch (choice)
         {
         case 1:
-            change_Password_Doctor(acc);
+            change_Pass(acc);
             break;
         case 2:
             update_Name(tmp);
             break;
         case 3:
-            // update_Birthday(tmp);
+            update_Age(tmp);
             break;
         case 4:
             update_Gender(tmp);
@@ -350,13 +353,14 @@ void Change_Information_Doctor(Doctor &tmp, Account &acc)
             update_Address(tmp);
             break;
         case 7:
-            // update_Experience(tmp);
+            update_Experience(tmp);
             break;
         case 8:
-            // update_Time_Woking(tmp);
+            // update_Time_Working(tmp);
             break;
         case 9:
-            break;
+            Change_File_infor_Doctor(tmp);
+            return;
         default:
             cout << "Yeu cau khong hop le. Hay nhap lai." << endl;
             break;
@@ -364,10 +368,10 @@ void Change_Information_Doctor(Doctor &tmp, Account &acc)
 
     } while (choice != 9);
 }
-void change_Password_Doctor(Account &acc)
+void change_Pass(Account &acc)
 {
     string old_password, new_password;
-    bool check = true;
+    bool check = false;
     do
     {
         cout << "Nhap mat khau cu: ";
@@ -380,28 +384,31 @@ void change_Password_Doctor(Account &acc)
         else
         {
             acc.Set_Pass(new_password);
+            acc.Change_Pass();
+            check = true;
         }
-    } while (check);
+    } while (!check);
 }
-
-void update_Name(Doctor &tmp)
+void update_Name(Person &tmp)
 {
-    string new_name, tmp_string = "";
+    string new_name;
+    cin.ignore();
     getline(cin, new_name);
-    for (int i = 0; i < new_name.size(); i++)
-        if (new_name[i] == ' ')
-            tmp_string = tmp_string + new_name[i] + '-';
-        else
-            tmp_string = tmp_string + new_name[i];
-    tmp_string.pop_back();
-    tmp.set_Name(tmp_string);
+    String_processing(new_name);
+    tmp.set_Name(new_name);
 }
-
-void update_Gender(Doctor &tmp)
+void update_Gender(Person &tmp)
 {
     int choice = 0;
     do
     {
+        cout << "Gioi tinh hien tai:";
+        if (tmp.get_Gender() == 'B')
+            cout << "Nam" << endl;
+        else if (tmp.get_Gender() == 'G')
+            cout << "Nu" << endl;
+        else
+            cout << "Khong xac dinh." << endl;
         cout << "1.Nam" << endl;
         cout << "2.Nu" << endl;
         cout << "Nhap gioi tinh: ";
@@ -417,15 +424,17 @@ void update_Gender(Doctor &tmp)
             cout << "Nhap sai!." << endl;
             break;
         }
+        if (choice == 1 || choice == 2)
+            return;
     } while (choice != 1 || choice != 2);
 }
-void update_Age(Doctor &tmp)
+void update_Age(Person &tmp)
 {
     int choice, new_age;
     bool check = true;
     do
     {
-        cout << "Tuoi hien tai : " << tmp.get_Age()<< endl;
+        cout << "Tuoi hien tai : " << tmp.get_Age() << endl;
         cout << "1.Thay doi tuoi." << endl;
         cout << "2.Thoat" << endl;
         cout << "Nhap lua chon: ";
@@ -455,17 +464,16 @@ void update_Age(Doctor &tmp)
             cout << "Nhap sai xin hay nhap lai." << endl;
             break;
         }
-
     } while (choice != 2);
 }
-void update_Address(Doctor &tmp)
+void update_Address(Person &tmp)
 {
     string address;
     int choice;
     bool check = true;
     do
     {
-        cout << "Dia chi hien tai : " << tmp.get_Address() << endl;
+        cout << "Dia chi hien tai : " << removeDashes(tmp.get_Address()) << endl;
         cout << "1.Thay doi dai chi." << endl;
         cout << "2.Thoat" << endl;
         cout << "Nhap lua chon: ";
@@ -474,7 +482,7 @@ void update_Address(Doctor &tmp)
         {
         case 1:
             cout << "Nhap dia chi moi:";
-            std::cin.ignore();
+            cin.ignore();
             getline(cin, address);
             tmp.set_Address(address);
             break;
@@ -487,8 +495,7 @@ void update_Address(Doctor &tmp)
 
     } while (choice != 2);
 }
-
-void update_Phone(Doctor &tmp)
+void update_Phone(Person &tmp)
 {
     string new_phone;
     int choice;
@@ -528,8 +535,51 @@ void update_Phone(Doctor &tmp)
 
     } while (choice != 2);
 }
-void update_Experience(Doctor &tmp) {}
-void update_Time_Woking(Doctor &tmp) {}
+void update_Experience(Doctor &tmp)
+{
+    string Exp;
+    int choice;
+    bool check = true;
+    do
+    {
+        cout << "Kinh nghiem hien tai: " << removeDashes(tmp.get_Exp()) << endl;
+        cout << "1.Thay doi kinh nghiem." << endl;
+        cout << "2.Thoat" << endl;
+        cout << "Nhap lua chon: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            cout << "Nhap kinh nghiem:";
+            cin.ignore();
+            getline(cin, Exp);
+            String_processing(Exp);
+            tmp.set_Exp(Exp);
+            break;
+        case 2:
+            return;
+        default:
+            cout << "Nhap sai xin hay nhap lai." << endl;
+            break;
+        }
+
+    } while (choice != 2);
+}
+// void update_Time_Woking(Doctor &tmp) {}
+void Change_File_infor_Doctor(Doctor &tmp)
+{
+    string filename = "Doctor/information/" + to_string(tmp.get_ID()) + ".txt";
+    ofstream file(filename);
+    file << tmp.get_ID() << endl;
+    file << tmp.get_Name() << endl;
+    file << tmp.get_Age() << endl;
+    file << tmp.get_Gender()<< endl;
+    file << tmp.get_Phone_Number() << endl;
+    file << tmp.get_Address() << endl;
+    file << tmp.get_Exp() << endl;
+    file << tmp.get_Time_Working() << endl;
+    file.close();
+}
 
 void View_Schedule(const Doctor &tmp)
 {
@@ -543,7 +593,7 @@ void View_Schedule(const Doctor &tmp)
         cout << "File khong ton tai." << endl;
         return;
     }
-    getCurrentDate();
+    cout << "Thoi gian hien tai la: " << getCurrentDate() << endl;
     cout << "Chon ngay xem lich lam viec: ";
     cin >> date_m_y;
 
@@ -563,6 +613,8 @@ void View_Schedule(const Doctor &tmp)
     for (int i = 0; i < Sokhunggio; i++)
     {
         file >> List_Schedule[i].Time_w >> List_Schedule[i].Id_patient >> List_Schedule[i].Name_Patient >> List_Schedule[i].Combo >> List_Schedule[i].Medical >> List_Schedule[i].About >> List_Schedule[i].Status;
+        removeDashes(List_Schedule[i].Name_Patient);
+        removeDashes(List_Schedule[i].About);
     }
     file.close();
 
@@ -577,6 +629,11 @@ void View_Schedule(const Doctor &tmp)
                 A[STT] = i;
                 cout << left << setw(5) << STT << setw(5) << List_Schedule[i].Time_w << setw(20) << List_Schedule[i].Name_Patient << setw(10) << List_Schedule[i].Combo << setw(5) << List_Schedule[i].Status << endl;
             }
+        if (STT == 0)
+        {
+            cout << "Khong co lich kham." << endl;
+            return;
+        }
         cout << "1.Chọn bệnh nhân cần xem." << endl;
         cout << "2.Tro lai." << endl;
         cout << "Hay nhap lua chon cua ban: ";
@@ -595,17 +652,58 @@ void View_Schedule(const Doctor &tmp)
             STT = 0;
             break;
         case 2:
-            /*Ghi lai vao file */
+            /*Luu lich lam viec moi lai vao file */
+            Change_File_Schedule(List_Schedule, tmp, date_m_y);
             return;
             break;
         default:
             cout << "Nhap sai, xin hay nhap lai.";
             break;
         }
-
     } while (choice != 2);
 }
+void Change_File_Schedule(Schedule A[], const Doctor &tmp, string &date_m_y)
+{
+    string file_working = "Doctor/Schedule/" + to_string(tmp.get_ID()) + ".txt";
+    string line;
+    ifstream file(file_working);
+    if (!file)
+    {
+        cout << "Not found  file";
+        return;
+    }
+    ofstream tmp_file("Doctor/Schedule/tmp.txt");
+    while (getline(file, line))
+    {
+        if (line != date_m_y)
+            tmp_file << line << endl;
+        else
+        {
+            tmp_file << line << endl;
+            for (int i = 0; i < Sokhunggio; i++)
+            {
+                getline(file, line);
+                String_processing(A[i].Name_Patient);
+                String_processing(A[i].About);
+                tmp_file << A[i].Time_w << " " << A[i].Id_patient << " " << A[i].Name_Patient << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << A[i].Status << endl;
+            }
+        }
+    }
+    file.close();
+    tmp_file.close();
 
+    /*Copy file tmp sang file cu*/
+    ifstream tmp_file_2("Doctor/Schedule/tmp.txt");
+    if (!tmp_file_2)
+    {
+        cout << "Not found file." << endl;
+        return;
+    }
+    ofstream file_2(file_working);
+    file_2 << tmp_file_2.rdbuf();
+    file_2.close();
+    tmp_file_2.close();
+}
 void Show_Schedule(Schedule &p)
 {
     int choice;
@@ -616,7 +714,6 @@ void Show_Schedule(Schedule &p)
         cout << left << setw(10) << "Time" << setw(20) << "Ten BN" << setw(10) << "Goi" << setw(20) << "Thuoc" << setw(40) << "Chi Tiet Kham" << setw(5) << "Trang thai" << endl;
         cout << left << setw(10) << p.Time_w << setw(20) << p.Name_Patient << setw(10) << p.Combo << setw(20) << p.Medical << setw(40) << p.About << setw(5) << p.Status << endl;
         // cout << setfill('-') << setw(70) << endl;
-
         cout << "1.Thay doi trang thai." << endl;
         cout << "2.Thay chi tiet kham." << endl;
         cout << "3.Thay doi thuoc." << endl;
@@ -626,7 +723,7 @@ void Show_Schedule(Schedule &p)
         switch (choice)
         {
         case 1:
-            p.Change_Status();
+            Change_Status(p);
             cout << "Thay doi trang thai thanh cong" << endl;
             break;
         case 2:
@@ -644,13 +741,16 @@ void Show_Schedule(Schedule &p)
         }
     } while (choice != 4);
 }
-
+void Change_Status(Schedule &p)
+{
+    p.Change_Status();
+}
 void Change_About(Schedule &p)
 {
     string tmp = "", line;
     cout << "Chi tiet kham: ";
-    std::cin.ignore();
-    std::getline(std::cin, line);
+    cin.ignore();
+    getline(cin, line);
 
     for (int i = 0; i < line.size(); i++)
         if (line[i] == ' ')
@@ -660,7 +760,6 @@ void Change_About(Schedule &p)
     tmp.pop_back();
     p.About = tmp;
 }
-
 void Change_Medical(Schedule &p)
 {
     string line;
@@ -698,4 +797,135 @@ void Change_Medical(Schedule &p)
 
     tmp_string.pop_back();
     p.Medical = tmp_string;
+}
+
+void Patient_Workspace(Account &acc)
+{
+    int choice;
+    Patient tmp;
+    tmp.set_Id(acc.get_Id());
+    do
+    {
+        cout << "Giao dien dat lich hen." << endl;
+        cout << "1.Dat lich kham. " << endl;
+        cout << "2.Xem lai lich kham." << endl;
+        cout << "3.Cap nhat thong tin." << endl;
+        cout << "4.Thoat." << endl;
+        cout << "Hay nhap yeu cau cua ban :";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            Booking_Schedule(tmp);
+            break;
+        case 2:
+            // View_Booking(tmp);
+            break;
+        case 3:
+            Change_Infor_Patient(tmp, acc);
+            break;
+        case 4:
+            return;
+            break;
+        default:
+            cout << "Nhap sai yeu cau . Hay nhap lai." << endl;
+            break;
+        }
+    } while (choice != 4);
+}
+
+void Booking_Schedule(Patient &tmp)
+{
+    vector<Service> List_Service;
+    unsigned int tmp_id, tmp_money, size, STT;
+    string tmp_name;
+    Service tmp_service;
+    ifstream file(file_Service);
+    if (!file)
+    {
+        cout << "Khong tin thay duoc file." << endl;
+        return;
+    }
+    file >> size;
+    for (int i = 0; i < size; i++)
+    {
+        file >> tmp_id >> tmp_name >> tmp_money;
+        removeDashes(tmp_name);
+        tmp_service = Service(tmp_id, tmp_name, tmp_money);
+        List_Service.push_back(tmp_service);
+    }
+    file.close();
+    cout << left << setw(5) << "STT" << setw(20) << "Ten Goi" << setw(10) << "Tien";
+    for (int i = 0; i <= size; i++)
+    {
+        cout << left << setw(5) << List_Service[i].id << setw(20) << List_Service[i].name << setw(10) << List_Service[i].money << "K";
+    }
+
+    cout << "Chon goi san pham. Nhap STT, nhap 0 de ket thuc." << endl;
+    cout << "Chon goi: ";
+    // while (cin >> STT)
+    // {
+    //     if (STT == 0)
+    //         break;
+    //     if (STT <= List_Service.size() && STT >= 1)
+
+    // }
+}
+void Change_Infor_Patient(Patient &tmp, Account &acc)
+{
+
+    int choice = 0;
+    do
+    {
+        cout << "1.Doi mat khau." << endl;
+        cout << "2.Cap nhat ho va ten ." << endl;
+        cout << "3.Cap nhat tuoi. " << endl;
+        cout << "4.Cap nhat gioi tinh." << endl;
+        cout << "5.Cap nhat so dien thoai." << endl;
+        cout << "6.Cap nhat dia chi." << endl;
+        cout << "7.Thoat." << endl;
+        cout << "Hay nhap yeu cau cua ban:";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            change_Pass(acc);
+            break;
+        case 2:
+            update_Name(tmp);
+            break;
+        case 3:
+            update_Age(tmp);
+            break;
+        case 4:
+            update_Gender(tmp);
+            break;
+        case 5:
+            update_Phone(tmp);
+            break;
+        case 6:
+            update_Address(tmp);
+            break;
+        case 7:
+            Change_File_infor_Patient(tmp);
+            return;
+        default:
+            cout << "Yeu cau khong hop le. Hay nhap lai." << endl;
+            break;
+        }
+
+    } while (choice != 7);
+}
+
+void Change_File_infor_Patient(Patient &tmp)
+{
+    string filename = "Patient/information/" + to_string(tmp.get_ID()) + ".txt";
+    ofstream file(filename);
+    file << tmp.get_ID() << endl;
+    file << tmp.get_Name() << endl;
+    file << tmp.get_Age() << endl;
+    file << tmp.get_Phone_Number() << endl;
+    file << tmp.get_Address() << endl;
+    file.close();
 }

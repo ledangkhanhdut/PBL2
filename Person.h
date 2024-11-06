@@ -1,3 +1,6 @@
+#ifndef PERSON_H  /*Tranh nap nhieu lan trong 1 file */
+#define PERSON_H
+
 #include <string>
 #include <iostream>
 using namespace std;
@@ -11,7 +14,7 @@ private:
     string address;
     char gender;
 public:
-    Person(unsigned int Id, const string & = "", int = 0, const string & = "", const string & = "", char = ' ');
+    Person(unsigned int Id = 9999, const string & = "", int = 0, const string & = "", const string & = "", char = 'B');
     Person(const Person &);
     // void update_Information(const Person &);
     void set_Id(const unsigned int & );
@@ -28,3 +31,6 @@ public:
     void   set_Gender(const char &);
     ~Person();
 };
+
+
+#endif

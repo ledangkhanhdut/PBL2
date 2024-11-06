@@ -13,5 +13,9 @@ public:
     void view_Workschedule();
     void view_Patient();
     void add_Medical();
+    string get_Time_Working() const;
+    void  set_Time_Working(const string &);
+    string get_Exp() const ;
+    void  set_Exp(const string &);
     ~Doctor();
 };

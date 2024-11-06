@@ -17,12 +17,22 @@ void Doctor::view_Patient()
 {
     cout << this->Exp;
 }
+
+string Doctor::get_Time_Working() const {
+    return this->Time_Working;
+}
+void Doctor::set_Time_Working(const string & exp){
+    this->Exp = exp;
+}
+string Doctor::get_Exp()const {
+    return this->Exp;
+}
+void  Doctor::set_Exp(const string& Exp) {
+    this->Exp = Exp;
+}
+
 void Doctor::add_Medical()
 {
 }
-Doctor::~Doctor() {};
+Doctor::~Doctor(){};
 
-// Doctor Tachchuoi(const string &line)
-// {
-//     Doctor p1.
-// }
