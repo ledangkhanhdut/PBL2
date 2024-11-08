@@ -65,7 +65,7 @@ char  Person::get_Gender() const {
     return this->gender;
 }
 void Person::set_Gender(const char &gender){
-    this->address = address;
+    this->gender = gender;
 }
 Person::~Person(){
 }

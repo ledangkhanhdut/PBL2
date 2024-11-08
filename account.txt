@@ -1,8 +1,5 @@
-7
+4
 1000 admin admin 1
-1001 hien hien123 2
+1001 hien hien 4
 1002 khanh khanh1 2
-1003 hienh hienh 4
-1004 anhtrai 12321 4
 1005 hien123 hien123 4
-1006 hienhhh hienhhh 4

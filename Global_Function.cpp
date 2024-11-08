@@ -57,6 +57,38 @@ string add_day(const string &day_m_y, int day)
 
     return result.str();
 }
+int calculateDayDifference(const string &dateAfter, const string &dateBefore) {
+    int dayAfter, monthAfter, yearAfter;
+    int dayBefore, monthBefore, yearBefore;
+
+    // Tách ngày, tháng, năm của dateAfter
+    sscanf(dateAfter.c_str(), "%d-%d-%d", &dayAfter, &monthAfter, &yearAfter);
+
+    // Tách ngày, tháng, năm của dateBefore
+    sscanf(dateBefore.c_str(), "%d-%d-%d", &dayBefore, &monthBefore, &yearBefore);
+
+    // Tạo struct tm cho dateAfter
+    tm tmAfter = {};
+    tmAfter.tm_mday = dayAfter;
+    tmAfter.tm_mon = monthAfter - 1; // tháng trong struct tm bắt đầu từ 0
+    tmAfter.tm_year = yearAfter - 1900; // năm trong struct tm bắt đầu từ 1900
+
+    // Tạo struct tm cho dateBefore
+    tm tmBefore = {};
+    tmBefore.tm_mday = dayBefore;
+    tmBefore.tm_mon = monthBefore - 1;
+    tmBefore.tm_year = yearBefore - 1900;
+
+    // Chuyển struct tm sang thời gian tính bằng giây
+    time_t timeAfter = mktime(&tmAfter);
+    time_t timeBefore = mktime(&tmBefore);
+
+    // Tính số ngày chênh lệch
+    double differenceInSeconds = difftime(timeAfter, timeBefore);
+    int dayDifference = differenceInSeconds / (60 * 60 * 24);
+
+    return dayDifference;
+}
 void  String_processing(string &str){
     string tmp_string;
     size_t start = str.find_first_not_of(" ");  
