@@ -913,17 +913,25 @@ void Booking_Schedule(Patient &tmp)
             break;
         if (STT <= List_Service.size() && STT >= 1)
         {
-            Book_Service = Book_Service + '-' + to_string(STT);
+            Book_Service = Book_Service  + to_string(STT)+ '-';
         }
     } while (STT !=0);
     if (Book_Service != "")
-    {
+    {   
+        Book_Service.pop_back();
         Booking.Combo = Book_Service;
         Choice_Doctor(Booking, id_doctor,day_m_y);
     }
-
-
+        if (Booking.Time_w != "") {
+            filename = "Patient/Schedule/" +to_string(tmp.get_ID()) +".txt";
+          
+            ofstream file(filename);
+            file.is_open();
+            file << day_m_y <<" " << Booking.Time_w <<" " <<Booking.Id_patient <<" " << Booking.Name_Patient <<" " << Booking.Combo <<" "<< Booking.Medical<<" "<<Booking.About  <<"  Y"<<endl;
+        file.close();
+        }
 }
+
 
 void Choice_Doctor(Schedule &Booking, unsigned int &id_doctor, string &day_m_y)
 {
@@ -974,30 +982,37 @@ void Choice_Doctor(Schedule &Booking, unsigned int &id_doctor, string &day_m_y)
         file >> tmp_Phone;
         file >> tmp_Address;
         file >> tmp_Gender;
-        file >> tmp_Exp;
         file >> tmp_Time_Woking;
-        doctor = Doctor(tmp_id, tmp_name, tmp_Age, tmp_Phone, tmp_Address, tmp_Gender, tmp_Exp,tmp_Time_Woking);
+        file >> tmp_Exp;
+
+        doctor.set_Name(tmp_name);
+        doctor.set_Id(tmp_id);
+        doctor.set_Age(tmp_Age);
+        doctor.set_Phone_Number(tmp_Phone);
+        doctor.set_Gender(tmp_Gender);
+        doctor.set_Exp(tmp_Exp);
+        doctor.set_Time_Working(tmp_Time_Woking);
+
         List_Doctor_info.push_back(doctor);
         file.close();
     }
-    /* Sai loi ky thua*/
-     for (int i = 0; i < List_Doctor_info.size(); i++) 
-     cout << i + 1 << List_Doctor_info[i].get_Name()  << List_Doctor_info[i].get_Age() << List_Doctor_info[i].get_Exp() << endl;
-     system("pause");
-    
+   
     do
     {
          for (int i = 0; i < List_Doctor_info.size(); i++)
     {
-        cout << left << setw(5) << "STT" << setw(30) << "Ten Bac Si" << setw(5) << "Tuoi" << setw(40) << "Kinh Nghiem." << endl;
-        cout << left << setw(5) << i + 1 << setw(30) << List_Doctor_info[i].get_Name() << setw(5) << List_Doctor_info[i].get_Age() << setw(40) << List_Doctor_info[i].get_Exp() << endl;
+        cout << left << setw(5) << "STT" << setw(30) << "Ten Bac Si" << setw(10) << "Tuoi" << setw(40) << "Kinh Nghiem." << endl;
+        tmp_name = List_Doctor_info[i].get_Name();
+        removeDashes(tmp_name);
+        cout << left << setw(5) << i + 1 << setw(30) << tmp_name << setw(10) << List_Doctor_info[i].get_Age() << setw(40) << List_Doctor_info[i].get_Exp() << endl;
     }
 
         cout << "Nhap STT de chon bac si: ";
         cin >> STT;
         if (STT >= 1 && STT <= List_Doctor_info.size())
 
-        { 
+        {   Booking.Id_patient = List_Doctor_info[STT-1].get_ID();
+            Booking.Name_Patient = List_Doctor_info[STT-1].get_Name();
             id_doctor = List_Doctor_info[STT - 1].get_ID();
             if (Choice_Day_Time(Booking, id_doctor,day_m_y))
             break;
@@ -1043,7 +1058,10 @@ bool Choice_Day_Time(Schedule &Booking, unsigned int &id_doctor , string &day_m_
             } while(line != "");
             file.close();
 
+
             do {
+            cin.ignore();
+            cout <<"Hom nay ngay: " << getCurrentDate() << endl;
             cout << "Nhap ngay muon Kham:";
             getline(cin, line);
             String_processing(line);
