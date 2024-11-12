@@ -3,7 +3,7 @@
 Person::Person(unsigned int Id,const string &name, int age, const string &phone, const string &address, char gender)
 {   
     this->Id = Id;
-    this->Name = Name;
+    this->Name = name;
     this->age = age;
     this->Phone_Number = phone;
     this->address = address;

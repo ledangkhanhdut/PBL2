@@ -12,6 +12,7 @@
 #define Sokhunggio 7
 #define file_Service "Service.txt"
 
+void Design();
 void Home();
 void Login();
 void Register();
@@ -65,11 +66,14 @@ void Home()
     int choice;
     do
     {
-        cout << "Giao dien dang ky va dang nhap." << endl;
-        cout << "1.Dang Ky" << endl;
-        cout << "2.Dang Nhap" << endl;
-        cout << "3.Thoat." << endl;
-        cout << "Hay nhap yeu cau cua ban :";
+        cout << " _________________________________________________________________" << endl;
+        cout << "|                                                                 |" <<endl;
+        cout << "|HOME                                                             |" << endl;
+        cout << "|1.Dang Ky                                                        |" << endl;
+        cout << "|2.Dang Nhap                                                      |" << endl;
+        cout << "|3.Thoat.                                                         |" << endl;
+        cout << "|_________________________________________________________________|" << endl;
+        cout << "Hay nhap yeu cau cua ban: ";
         cin >> choice;
         switch (choice)
         {
@@ -110,7 +114,7 @@ void Register()
     ofstream file2(filename);
     file2.close();
 
-    cout << "Tao tai khoan thanh cong." << endl;
+    cout << "Tao tai khoan thanh cong" << endl;
 }
 void Login()
 {
@@ -222,7 +226,7 @@ void Remove_Doctor(Manager &Admin)
 
         else
             cout << "Xoa tai khoan that bai" << endl;
-    } while (check = false);
+    } while (check == false);
 }
 void Add_Cashier(Manager &Admin)
 {
@@ -255,7 +259,7 @@ void Remove_Patient(Manager &Admin)
             cout << "Xoa tai khoan thanh cong." << endl;
         else
             cout << "Xoa tai khoan that bai." << endl;
-    } while (check = false);
+    } while (check == false);
 }
 void Doctor_Workspace(Account &acc)
 {
@@ -1045,7 +1049,7 @@ bool Choice_Day_Time(Schedule &Booking, unsigned int &id_doctor , string &day_m_
             do
             {
                 file >> line;
-                if (line == add_day(getCurrentDate(),1));
+                if (line == add_day(getCurrentDate(),1)){}
                     break;
                 for (int i = 0; i < Sokhunggio; i++)
                 {
