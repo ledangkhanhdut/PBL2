@@ -10,13 +10,14 @@ int main() {
     cout << "|  1.Dang Ky                                                   |" << endl;
     cout << "|  2.Dang Nhap                                                 |" << endl;
     cout << "|  3.Thoat.                                                    |" << endl;
-    cout << "|  Hay nhap yeu cau cua ban :                                  |" << endl;
+    cout << "|  Hay nhap yeu cau cua ban :                                   |" << endl;
     cout << "+--------------------------------------------------------------+" << endl;
 
-    // Đưa con trỏ trở lại vị trí nhập choice ngayda sau câu "Hay nhap yeu cau cua ban :"
-    cout << "\033[2A"; // Di chuyển lên 6 dòng
-    cout << "\033[31C"; // Di chuyển con trỏ sang phải 36 ký tự
+    // �ua con tr? tr? l?i v? tr� nh?p choice ngay sau c�u "Hay nhap yeu cau cua ban :"
+    cout << "\033[2A"; // Di chuy?n l�n 6 d�ng
+    cout << "\033[32C"; // Di chuy?n con tr? sang ph?i 36 k� t?
     cin >> choice;
 
     return 0;
 }
+

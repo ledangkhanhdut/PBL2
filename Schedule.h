@@ -7,8 +7,8 @@ class Schedule
 {
 public:
     string Time_w;
-    unsigned int Id_patient;
-    string Name_Patient;
+    unsigned int ID_person;
+    string Name;
     string Combo;
     string Medical;
     string About;

@@ -1,10 +1,10 @@
 #include "Schedule.h"
 
-Schedule::Schedule(const string &time_W, unsigned int id_patient, const string &name, const string &Combo, const string &Medical, const string &About, char Status)
+Schedule::Schedule(const string &time_W, unsigned int id_person, const string &name, const string &Combo, const string &Medical, const string &About, char Status)
 {
     this->Time_w = time_W;
-    this->Id_patient = id_patient;
-    this->Name_Patient = 
+    this->ID_person = id_person;
+    this->Name = name;
     this->Combo =  Combo;
     this->Medical = Medical;
     this->About = About;
@@ -12,8 +12,8 @@ Schedule::Schedule(const string &time_W, unsigned int id_patient, const string &
 }
 Schedule::Schedule(const Schedule  &p){
     this->Time_w = p.Time_w;
-    this->Id_patient = p.Id_patient;
-    this->Name_Patient= p.Name_Patient;
+    this->ID_person = p.ID_person;
+    this->Name= p.Name;
     this->Combo = p.Combo;
     this->Medical = p.Medical;
     this->About = p.About;
