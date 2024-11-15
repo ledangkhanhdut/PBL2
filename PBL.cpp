@@ -110,6 +110,7 @@ void Register()
         check = tmp.Register(user, pass, 4);
         if (!check)
             cout << "Tai khoan da ton tai" << endl;
+            sleep("3");
     } while (!check);
 
     /*Tao file thong tin va lich cho benh nhan*/
