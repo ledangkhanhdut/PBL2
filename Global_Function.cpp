@@ -1,7 +1,7 @@
 #include "Global_Function.h"
 
 void Design(){
-    cout << "________________________________________________________________" << endl;
+    cout << " ________________________________________________________________" << endl;
     cout << "|								 |" << endl;
     cout << "|               PBL2: DU AN CO SO LAP TRINH                      |" << endl;
     cout << "|       TEN CHU DE: UNG DUNG QUAN LY DAT LICH KHAM BENH          |" << endl;
