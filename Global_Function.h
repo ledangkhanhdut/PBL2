@@ -4,10 +4,12 @@
 #include <string>
 #include <cstdio>
 #include <cctype>
+#include <sstream>
 // #include <windows.h>
 
 using namespace std;
-
+// Khai báo trong file header
+//extern void Design();
 void Design();
 string getCurrentDate();
 string add_day(const string &, int);
