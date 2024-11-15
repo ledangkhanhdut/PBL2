@@ -15,3 +15,4 @@ int calculateDayDifference(const string &, const string &);
 bool isNumeric(const string &);
 void String_processing(string &);
 void removeDashes(string &);
+string Extral_Status(char);

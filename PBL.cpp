@@ -110,7 +110,7 @@ void Register()
         check = tmp.Register(user, pass, 4);
         if (!check)
             cout << "Tai khoan da ton tai" << endl;
-            sleep("3");
+           // sleep(3);
     } while (!check);
 
     /*Tao file thong tin va lich cho benh nhan*/
@@ -663,7 +663,7 @@ void View_Schedule(const Doctor &tmp)
             {
                 ++STT;
                 A[STT] = i;
-                cout << left << setw(5) << STT << setw(5) << List_Schedule[i].Time_w << setw(20) << List_Schedule[i].Name << setw(10) << List_Schedule[i].Combo << setw(5) << List_Schedule[i].Status << endl;
+                cout << left << setw(5) << STT << setw(5) << List_Schedule[i].Time_w << setw(20) << List_Schedule[i].Name << setw(10) << List_Schedule[i].Combo << setw(5) << Extral_Status(List_Schedule[i].Status) << endl;
             }
         if (STT == 0)
         {
@@ -721,7 +721,7 @@ void Change_File_Schedule(Schedule A[], const Doctor &tmp, string &date_m_y)
                 getline(file, line);
                 String_processing(A[i].Name);
                 String_processing(A[i].About);
-                tmp_file << A[i].Time_w << " " << A[i].ID_person << " " << A[i].Name << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << A[i].Status << endl;
+                tmp_file << A[i].Time_w << " " << A[i].ID_person << " " << A[i].Name << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << Extral_Status(A[i].Status) << endl;
             }
         }
     }
@@ -746,10 +746,8 @@ void Show_Schedule(Schedule &p)
     do
     {
         system("cls");
-        // cout << setfill('-') << setw(70) << endl;
         cout << left << setw(10) << "Time" << setw(20) << "Ten BN" << setw(10) << "Goi" << setw(20) << "Thuoc" << setw(40) << "Chi Tiet Kham" << setw(5) << "Trang thai" << endl;
         cout << left << setw(10) << p.Time_w << setw(20) << p.Name << setw(10) << p.Combo << setw(20) << p.Medical << setw(40) << p.About << setw(5) << p.Status << endl;
-        // cout << setfill('-') << setw(70) << endl;
         cout << "1.Thay doi trang thai." << endl;
         cout << "2.Thay chi tiet kham." << endl;
         cout << "3.Thay doi thuoc." << endl;
@@ -932,7 +930,7 @@ void Booking_Schedule(Patient &tmp)
         cout << left << setw(5) << List_Service[i].id << setw(20) << List_Service[i].name << setw(10) << List_Service[i].money << "K" << endl;
     }
 
-    cout << "Nhap STT chon goi san pham. Nhap 0 de ket thuc." << endl;
+    cout << "Nhap STT chon goi san pham. Co the chon nhieu goi. Nhap 0 de ket thuc." << endl;
     cout << "Chon goi: ";
     do
     {
@@ -977,6 +975,8 @@ bool Choice_Time(Schedule &Booking, string &day_month_year)
     string tmp_day, tmp_time;
     do
     {
+        system("cls");
+        cout <<"Da chon goi: " << Booking.Combo << endl;
         cout << "1.Nhap ngay kham." << endl;
         cout << "2.Tro lai." << endl;
         cout << "Nhap yeu cau cua ban:";
@@ -1225,7 +1225,7 @@ do{
     cout <<left << setw(10) <<"STT"<<setw(15) << "Ngay" <<setw(10) << "Gio" << setw(30) << "Ten Bac Si" << setw(10) << "Trang Thai" << endl;
     for (int i =  0; i < List_Schedule.size(); i++) 
     {
-      cout <<left <<setw(10)<< i+1 <<setw(15) << List_Date[i] <<setw(10) << List_Schedule[i].Time_w << setw(30) << List_Schedule[i].Name << setw (10) << List_Schedule[i].Status << endl;
+      cout <<left <<setw(10)<< i+1 <<setw(15) << List_Date[i] <<setw(10) << List_Schedule[i].Time_w << setw(30) << List_Schedule[i].Name << setw (10) <<Extral_Status(List_Schedule[i].Status) << endl;
     }
 
     cout <<"1.Xem chi tiet. " << endl;
@@ -1254,7 +1254,7 @@ void Show_Schedule(Patient &tmp,vector <string> &List_Date , vector <Schedule> &
     cout <<left << setw(10) <<"STT"<<setw(15) << "Ngay" <<setw(10) << "Gio" << setw(30) << "Ten Bac Si" <<setw(10) << "Goi"<< setw(20)<<"Thuoc" <<setw(20)<<"Chu Thich"<< "Trang Thai" << endl;
     for (int i =  0; i < List_Schedule.size(); i++) 
     {
-      cout <<left <<setw(10)<< i+1 <<setw(15) << List_Date[i] <<setw(10) << List_Schedule[i].Time_w << setw(30) << List_Schedule[i].Name << setw (10) << List_Schedule[i].Combo << setw(20) <<List_Schedule[i].Medical << setw(20)<<List_Schedule[i].About<<setw(10) << List_Schedule[i].Status << endl;
+      cout <<left <<setw(10)<< i+1 <<setw(15) << List_Date[i] <<setw(10) << List_Schedule[i].Time_w << setw(30) << List_Schedule[i].Name << setw (10) << List_Schedule[i].Combo << setw(20) <<List_Schedule[i].Medical << setw(20)<<List_Schedule[i].About<<setw(10) <<Extral_Status(List_Schedule[i].Status) << endl;
     }
     cout <<"1.Huy lich hen." << endl;
     cout <<"2.Tro lai." << endl;

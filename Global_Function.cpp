@@ -138,6 +138,12 @@ void removeDashes(string &str){
     str = tmp_str;
 }
 
+string Extral_Status(char Status){
+    if (Status == 'N') return "Chua Kham";
+    else return "Da Kham";
+
+}
+
 // bool isValidDate(int day, int month, int year) {
 //     if (month < 1 || month > 12) {
 //         return false;
