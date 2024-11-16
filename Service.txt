@@ -1,6 +1,15 @@
 5
-1 GOI1 1000
-2 GOI2 2000
-3 GOI3 3000
-4 GOI4 4000
-5 GOI5 5000
+1 
+Cao voi rang 
+300
+2 
+Nho rang so 8 
+1500
+3 
+Nho rang sua 200
+4 
+Tay trang rang 
+3000
+5 
+Nieng rang 
+25000
