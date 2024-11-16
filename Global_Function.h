@@ -5,7 +5,8 @@
 #include <cstdio>
 #include <cctype>
 #include <sstream>
-// #include <windows.h>
+#include <thread>
+#include <windows.h>
 
 using namespace std;
 // Khai báo trong file header
