@@ -37,6 +37,7 @@ void update_Experience(Doctor &);
 void Change_File_infor_Doctor(Doctor &);
 void View_Schedule(const Doctor &);
 void Show_Schedule(Schedule &);
+void Update_File_Sche_Patient(Schedule, string, Doctor);
 void Change_File_Schedule(Schedule[], const Doctor &, string &);
 void Change_About(Schedule &);
 void Change_Medical(Schedule &);
@@ -51,12 +52,13 @@ bool Choice_Doctor(Schedule &, string &);
 bool Find_Doctor(Schedule &, string &, vector<unsigned int>);
 void View_Booking(Patient &);
 void Show_Schedule_P(Patient &, vector<string> &, vector<Schedule> &);
+void Update_Schedule_Doctor(Schedule &, string, unsigned int);
 void Change_Infor_Patient(Patient &, Account &);
 void Change_File_infor_Patient(Patient &);
+
 // bool isValidDate(int, int, int);
 
 bool isEmptyPerson(const Patient &);
-
 
 int main()
 {
@@ -191,12 +193,12 @@ void Management_interface(Account &Acc)
     {
         system("cls");
         Manager Admin(Acc);
-        cout << "1.Them Bác Sĩ" << endl;
-        cout << "2.Xóa Bác Sĩ" << endl;
+        cout << "1.Them Bac Si." << endl;
+        cout << "2.Xoa Bac Si." << endl;
         cout << "3.Them Thu Ngan" << endl;
-        cout << "4.Xóa Thu Ngan" << endl;
+        cout << "4.Xoa Thu Ngan." << endl;
         cout << "5.Them benh nhan" << endl;
-        cout << "6.Xóa benh nhan" << endl;
+        cout << "6.Xoa Benh Nhan" << endl;
         cout << "7.Thoat" << endl;
         cout << "Hay nhap yeu cau cua ban: ";
         cin >> choice;
@@ -452,11 +454,14 @@ void change_Pass(Account &acc)
 void update_Name(Person &tmp)
 {
 
-    string new_name;
+    string new_name, tmp_name;
+    tmp_name = tmp.get_Name();
+    removeDashes(tmp_name);
     system("cls");
     cout << "+--------------------------------------------------------------+" << endl;
     cout << "|                    CAP NHAT HO VA TEN                        |" << endl;
     cout << "+--------------------------------------------------------------+" << endl;
+    cout << left << setw(20) << "| Ten hien tai: " << setw(43) << tmp_name << "|" << endl;
     cout << "+--------------------------------------------------------------+" << endl;
     cout << "| Ho va Ten:                                                   |" << endl;
     cout << "+--------------------------------------------------------------+" << endl;
@@ -681,7 +686,7 @@ void Change_File_infor_Doctor(Doctor &tmp)
 void View_Schedule(const Doctor &tmp)
 {
     int STT = 0, choice = 0, choice2 = 0, A[Sokhunggio];
-    Schedule List_Schedule[Sokhunggio];
+    Schedule List_Schedule[Sokhunggio], tmp_Schedule;
     string date_m_y, line;
     string file_working = "Doctor/Schedule/" + to_string(tmp.get_ID()) + ".txt";
     ifstream file(file_working);
@@ -690,16 +695,38 @@ void View_Schedule(const Doctor &tmp)
         cout << "File khong ton tai." << endl;
         return;
     }
-    system("cls");
-    cout << "Thoi gian hien tai la: " << getCurrentDate() << endl;
-    cout << "Chon ngay xem lich lam viec: ";
-    cin.ignore();
-    getline(cin, date_m_y);
-    String_processing(date_m_y);
+    do
+    {
+        system("cls");
+        cout << "1.Lich lam viec hom nay." << endl;
+        cout << "2.Chon ngay xem lich lam viec." << endl;
+        cout << "3.Thoat." << endl;
+        cout << "Hay nhap yeu cau cua ban:";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            date_m_y = getCurrentDate();
+            break;
+        case 2:
+            system("cls");
+            cout << "Thoi gian hien tai la: " << getCurrentDate() << endl;
+            cout << "Chon ngay xem lich lam viec: ";
+            cin.ignore();
+            getline(cin, date_m_y);
+            String_processing(date_m_y);
+            break;
+        case 3:
+            return;
+            break;
+        default:
+            cout << "Nhap sai xin hay nhap lai." << endl;
+            break;
+        }
+    } while (choice > 3 || choice < 1);
 
     file.clear();  // Đặt lại trạng thái của file
     file.seekg(0); // Di chuyển con trỏ về đầu file
-
     while (getline(file, line))
     {
         if (line == date_m_y)
@@ -734,7 +761,7 @@ void View_Schedule(const Doctor &tmp)
             cout << "Khong co lich kham." << endl;
             return;
         }
-        cout << "1.Chọn bệnh nhân cần xem." << endl;
+        cout << "1.Chon benh nhan can xem chi tiet." << endl;
         cout << "2.Tro lai." << endl;
         cout << "Hay nhap lua chon cua ban: ";
         cin >> choice;
@@ -746,9 +773,12 @@ void View_Schedule(const Doctor &tmp)
                 cout << "Nhap so thu tu benh nhan can xem: ";
                 cin >> choice2;
                 if (choice2 > STT || choice2 < 1)
-                    cout << "STT khong ton tai:";
+                    cout << "STT khong ton tai:" << endl;
             } while (choice2 <= 0 || choice2 > STT);
+            tmp_Schedule = List_Schedule[A[choice2]];
             Show_Schedule(List_Schedule[A[choice2]]);
+            //    if (tmp_Schedule != List_Schedule[A[choice2]])
+            Update_File_Sche_Patient(List_Schedule[A[choice2]], date_m_y, tmp);
             STT = 0;
             break;
         case 2:
@@ -782,9 +812,9 @@ void Change_File_Schedule(Schedule A[], const Doctor &tmp, string &date_m_y)
             tmp_file << line << endl;
             for (int i = 0; i < Sokhunggio; i++)
             {
-                getline(file, line);
                 String_processing(A[i].Name);
                 String_processing(A[i].About);
+                getline(file, line);
                 tmp_file << A[i].Time_w << " " << A[i].ID_person << " " << A[i].Name << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << A[i].Status << endl;
             }
         }
@@ -845,18 +875,12 @@ void Change_Status(Schedule &p)
 }
 void Change_About(Schedule &p)
 {
-    string tmp = "", line;
+    string line;
     cout << "Chi tiet kham: ";
     cin.ignore();
     getline(cin, line);
-
-    for (int i = 0; i < line.size(); i++)
-        if (line[i] == ' ')
-            tmp = tmp + line[i] + '-';
-        else
-            tmp = tmp + line[i];
-    tmp.pop_back();
-    p.About = tmp;
+    String_processing(line);
+    p.About = line;
 }
 void Change_Medical(Schedule &p)
 {
@@ -896,6 +920,52 @@ void Change_Medical(Schedule &p)
     tmp_string.pop_back();
     p.Medical = tmp_string;
 }
+void Update_File_Sche_Patient(Schedule p, string Date, Doctor doctor)
+{
+    string filename, tmp_date, tmp_time, tmp_service, tmp_medical, tmp_about, tmp_name;
+    char tmp_status;
+    Schedule tmp_Schedule;
+    int choice;
+    unsigned int tmp_ID, ID_Patient;
+    vector<Schedule> List_Schedule;
+    vector<string> List_Date;
+    ID_Patient = p.ID_person;
+
+    filename = "Patient/Schedule/" + to_string(ID_Patient) + ".txt";
+    ifstream file(filename);
+
+    while (file >> tmp_date >> tmp_time >> tmp_ID >> tmp_name >> tmp_service >> tmp_medical >> tmp_about >> tmp_status)
+    {
+        if (tmp_date != "")
+        {
+            removeDashes(tmp_name);
+            List_Date.push_back(tmp_date);
+            tmp_Schedule = Schedule(tmp_time, tmp_ID, tmp_name, tmp_service, tmp_medical, tmp_about, tmp_status);
+            List_Schedule.push_back(tmp_Schedule);
+        }
+    }
+    file.close();
+
+    p.Name = doctor.get_Name();
+    p.ID_person = doctor.get_ID();
+
+    for (int i = 0; i < List_Schedule.size(); i++)
+        if (List_Date[i] == Date && List_Schedule[i].Time_w == p.Time_w && List_Schedule[i].ID_person == p.ID_person)
+        {
+            List_Schedule[i] = p;
+            break;
+        }
+
+    ofstream file2(filename);
+    for (int i = 0; i < List_Schedule.size(); i++)
+    {
+        file2 << List_Date[i] << " " << List_Schedule[i].Time_w << " "
+              << List_Schedule[i].ID_person << " " << List_Schedule[i].Name << " "
+              << List_Schedule[i].Combo << " " << List_Schedule[i].Medical << " "
+              << List_Schedule[i].About << " " << List_Schedule[i].Status << endl;
+    }
+    file2.close();
+}
 
 void Patient_Workspace(Account &acc)
 {
@@ -924,12 +994,13 @@ void Patient_Workspace(Account &acc)
         switch (choice)
         {
         case 1:
-            if (isEmptyPerson(tmp)) {
-                cout <<"\033[2C";
-                cout <<"Vui Long Nhap Day Du Thong Tin" << endl;
+            if (isEmptyPerson(tmp))
+            {
+                cout << "\033[2C";
+                cout << "Vui Long Nhap Day Du Thong Tin" << endl;
                 Sleep(1500);
                 break;
-                }
+            }
             Booking_Schedule(tmp);
             break;
         case 2:
@@ -978,11 +1049,11 @@ void Read_information_Patient(Patient &tmp)
 void Booking_Schedule(Patient &tmp)
 {
     vector<Service> List_Service;
-    string tmp_name, day_month_year;
-    string Book_Service = "", line, filename = "",convert_money;
+    string tmp_name, Date;
+    string Book_Service = "", line, filename = "", convert_money;
     unsigned int tmp_money, size, STT, tmp_id, id_doctor;
     Service tmp_service;
-    Schedule Booking, List_Schedule[Sokhunggio];
+    Schedule Booking, Booking_for_Doctor;
     Doctor doctor;
     ifstream file(file_Service);
     if (!file)
@@ -1003,13 +1074,13 @@ void Booking_Schedule(Patient &tmp)
     system("cls");
 
     cout << "+--------------------------------------------------------------------------------+" << endl;
-    cout <<left << setw(10) <<"| STT" << setw(20) << "Ten Goi" << setw(10) << "Don Gia"<<setw(41)<<" "<<setw(1)<<"|" << endl;
+    cout << left << setw(10) << "| STT" << setw(20) << "Ten Goi" << setw(10) << "Don Gia" << setw(41) << " " << setw(1) << "|" << endl;
     cout << "+--------------------------------------------------------------------------------+" << endl;
 
     for (int i = 0; i < size; i++)
-    {   
-        convert_money = to_string(List_Service[i].money)+"K";
-        cout <<left<<setw(3)<<"|" << setw(7) << List_Service[i].id<< setw(20) << List_Service[i].name << setw(10) << convert_money <<setw(41)<<" "<<setw(1)<< "|" << endl;
+    {
+        convert_money = to_string(List_Service[i].money) + "K";
+        cout << left << setw(3) << "|" << setw(7) << List_Service[i].id << setw(20) << List_Service[i].name << setw(10) << convert_money << setw(41) << " " << setw(1) << "|" << endl;
     }
 
     cout << "+--------------------------------------------------------------------------------+" << endl;
@@ -1031,31 +1102,23 @@ void Booking_Schedule(Patient &tmp)
     {
         Book_Service.pop_back();
         Booking.Combo = Book_Service;
-        if (Choice_Time(Booking, day_month_year) == true)
+        if (Choice_Time(Booking, Date) == true)
         {
+            cout << tmp.get_Name();
+            system("pause");
+            Booking_for_Doctor = Booking;
+            Booking_for_Doctor.Name = tmp.get_Name();
+            Booking_for_Doctor.ID_person = tmp.get_ID();
+            Update_Schedule_Doctor(Booking_for_Doctor, Date, Booking.ID_person);
 
-            doctor.set_Id(Booking.ID_person);
-
-            for (int i = 0; i < Sokhunggio; i++)
-            {
-                List_Schedule[i].Time_w = Lay_Khung_Gio(i + 1);
-                if (List_Schedule[i].Time_w == Booking.Time_w)
-                {
-                    List_Schedule[i] = Booking;
-                    List_Schedule[i].Name = tmp.get_Name();
-                    List_Schedule[i].ID_person = tmp.get_ID();
-                }
-            }
-
-            Change_File_Schedule(List_Schedule, doctor, day_month_year);
             filename = "Patient/Schedule/" + to_string(tmp.get_ID()) + ".txt";
             ofstream file(filename, ios::app);
-            file << day_month_year << " " << Booking.Time_w << " " << Booking.ID_person << " " << Booking.Name << " " << Booking.Combo << " " << Booking.Medical << " " << Booking.About << " " << Booking.Status << endl;
+            file << Date << " " << Booking.Time_w << " " << Booking.ID_person << " " << Booking.Name << " " << Booking.Combo << " " << Booking.Medical << " " << Booking.About << " " << Booking.Status << endl;
             file.close();
         }
     }
 }
-bool Choice_Time(Schedule &Booking, string &day_month_year)
+bool Choice_Time(Schedule &Booking, string &Date)
 {
     int choice;
     int STT, calculateDay;
@@ -1103,9 +1166,9 @@ bool Choice_Time(Schedule &Booking, string &day_month_year)
                 }
                 if (check)
                 {
-                    day_month_year = tmp_day;
+                    Date = tmp_day;
                     Booking.Time_w = tmp_time;
-                    if (Choice_Doctor(Booking, day_month_year))
+                    if (Choice_Doctor(Booking, Date))
                         return true;
                     else
                     {
@@ -1156,7 +1219,7 @@ string Lay_Khung_Gio(int STT)
     }
 }
 
-bool Choice_Doctor(Schedule &Booking, string &day_month_year)
+bool Choice_Doctor(Schedule &Booking, string &Date)
 {
 
     vector<unsigned int> List_Doctor;
@@ -1183,14 +1246,14 @@ bool Choice_Doctor(Schedule &Booking, string &day_month_year)
     }
 
     file_acc.close();
-    if (!Find_Doctor(Booking, day_month_year, List_Doctor))
+    if (!Find_Doctor(Booking, Date, List_Doctor))
     {
         return false;
     }
     return true;
 }
 
-bool Find_Doctor(Schedule &Booking, string &day_month_year, vector<unsigned int> List_Doctor)
+bool Find_Doctor(Schedule &Booking, string &Date, vector<unsigned int> List_Doctor)
 {
     Doctor doctor;
     string filename, line;
@@ -1206,33 +1269,35 @@ bool Find_Doctor(Schedule &Booking, string &day_month_year, vector<unsigned int>
     for (int i = 0; i < List_Doctor.size(); i++)
     {
         filename = "Doctor/schedule/" + to_string(List_Doctor[i]) + ".txt";
-        ifstream file(filename);
-        if (!file)
-        {
-            cout << "File not found." << endl;
-            return false;
-        }
-
-        while (getline(file, line))
-        {
-            if (line == day_month_year)
+            ifstream file(filename);
+            if (!file)
             {
-                for (int j = 0; j < Sokhunggio; j++)
-                {
-                    file >> tmp_time >> tmp_id >> tmp_name >> tmp_Service >> tmp_medical >> tmp_about >> tmp_status;
-                    if (tmp_time == Booking.Time_w && tmp_id == 0)
-                    {
-                        DS_BS_Lich_Trong.push_back(List_Doctor[i]);
-                        break;
-                    }
-                }
-                break;
+                cout << "File not found." << endl;
+                return false;
             }
-        }
+
+            while (getline(file, line))
+            {
+                if (line == Date)
+                {
+                    for (int j = 0; j < Sokhunggio; j++)
+                    {
+                        file >> tmp_time >> tmp_id >> tmp_name >> tmp_Service >> tmp_medical >> tmp_about >> tmp_status;
+                        if (tmp_time == Booking.Time_w && tmp_id == 0)
+                        {
+                            DS_BS_Lich_Trong.push_back(List_Doctor[i]);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        
     }
+
     if (DS_BS_Lich_Trong.size() == 0)
     {
-        cout << "Khong co BS trong ngay: " << day_month_year << " Gio:" << Booking.Time_w << endl;
+        cout << "Khong co BS trong ngay: " << Date << " Gio:" << Booking.Time_w << endl;
         return false;
     }
 
@@ -1332,11 +1397,15 @@ void View_Booking(Patient &tmp)
     {
         if (tmp_date != "")
         {
-            removeDashes(tmp_name);
             List_Date.push_back(tmp_date);
             tmp_Schedule = Schedule(tmp_time, tmp_ID, tmp_name, tmp_service, tmp_medical, tmp_about, tmp_status);
             List_Schedule.push_back(tmp_Schedule);
         }
+    }
+    if (List_Schedule.size() == 0)
+    {
+        cout << "Chua co lich hen." << endl;
+        return;
     }
     do
     {
@@ -1351,10 +1420,12 @@ void View_Booking(Patient &tmp)
 
         for (int i = 0; i < List_Schedule.size(); i++)
         {
+            tmp_name =List_Schedule[i].Name;
+            removeDashes(tmp_name);
             cout << "| " << left << setw(10) << i + 1
                  << setw(15) << List_Date[i]
                  << setw(10) << List_Schedule[i].Time_w
-                 << setw(30) << List_Schedule[i].Name
+                 << setw(30) << tmp_name
                  << setw(10) << Extral_Status(List_Schedule[i].Status)
                  << "                    |" << endl;
         }
@@ -1384,6 +1455,8 @@ void View_Booking(Patient &tmp)
 void Show_Schedule_P(Patient &tmp, vector<string> &List_Date, vector<Schedule> &List_Schedule)
 {
     int choice, STT;
+    string tmp_name;
+    Schedule tmp_Schedule;
     do
     {
         system("cls");
@@ -1399,10 +1472,12 @@ void Show_Schedule_P(Patient &tmp, vector<string> &List_Date, vector<Schedule> &
         cout << "+-------------------------------------------------------------------------------------------------------------------------------+" << endl;
         for (int i = 0; i < List_Schedule.size(); i++)
         {
+            tmp_name = List_Schedule[i].Name;
+            removeDashes(tmp_name);
             cout << "| " << left << setw(10) << i + 1
                  << setw(15) << List_Date[i]
                  << setw(10) << List_Schedule[i].Time_w
-                 << setw(20) << List_Schedule[i].Name
+                 << setw(20) << tmp_name
                  << setw(10) << List_Schedule[i].Combo
                  << setw(20) << List_Schedule[i].Medical
                  << setw(30) << List_Schedule[i].About
@@ -1436,6 +1511,8 @@ void Show_Schedule_P(Patient &tmp, vector<string> &List_Date, vector<Schedule> &
             }
             else
             {
+                tmp_Schedule.Time_w = List_Schedule[STT - 1].Time_w;
+                Update_Schedule_Doctor(tmp_Schedule, List_Date[STT - 1], List_Schedule[STT - 1].ID_person);
                 List_Date.erase(List_Date.begin() + (STT - 1));
                 List_Schedule.erase(List_Schedule.begin() + (STT - 1));
 
@@ -1537,32 +1614,46 @@ void Change_File_infor_Patient(Patient &tmp)
     file.close();
 }
 
-bool isEmptyPerson(const Patient &p) {
-    if ( 
-        p.get_Name().empty() && 
-        p.get_Phone_Number().empty() && 
-        p.get_Address().empty()
-            ){ 
-        return true; 
+bool isEmptyPerson(const Patient &p)
+{
+    if (
+        p.get_Name().empty() &&
+        p.get_Phone_Number().empty() &&
+        p.get_Address().empty())
+    {
+        return true;
     }
     return false; // Đối tượng có thông tin
 }
-// void Update_Schedule_Doctor(Schedule &schedule, string Date , unsigned int ID_Doctor){
-//     vector <schedule> List_Schedule;
-//     string line;
-//     string file_name ="Doctor/Schedule/"+to_string(ID_Doctor);
-//     ifstream file(filename);
-    
-//     while(getline(file,line)){
-//         if (line == Date){
-//             for (int i = 1; i< = Sokhunggio; i++){
-//                 file >>
-//             }
-//         }
 
-//     }
-
-
-
-
-// }
+void Update_Schedule_Doctor(Schedule &schedule, string Date, unsigned int ID_Doctor)
+{
+    Schedule List_Schedule[Sokhunggio];
+    string line;
+    string filename = "Doctor/Schedule/" + to_string(ID_Doctor) + ".txt";
+    ifstream file(filename);
+    Doctor doctor;
+    doctor.set_Id(ID_Doctor);
+    while (getline(file, line))
+    {
+        if (line == Date)
+        {
+            for (int i = 0; i < Sokhunggio; i++)
+            {
+                file >> List_Schedule[i].Time_w >> List_Schedule[i].ID_person >> List_Schedule[i].Name >> List_Schedule[i].Combo >> List_Schedule[i].Medical >> List_Schedule[i].About >> List_Schedule[i].Status;
+                removeDashes(List_Schedule[i].Name);
+                removeDashes(List_Schedule[i].About);
+            }
+            break;
+        }
+    }
+    file.close();
+    removeDashes(schedule.Name);
+    for (int i = 0; i < Sokhunggio; i++)
+        if (List_Schedule[i].Time_w == schedule.Time_w)
+        {
+            List_Schedule[i] = schedule;
+            break;
+        }
+    Change_File_Schedule(List_Schedule, doctor, Date);
+}
