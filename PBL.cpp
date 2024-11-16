@@ -236,7 +236,7 @@ void Remove_Doctor(Manager &Admin)
 
         else
             cout << "Xoa tai khoan that bai" << endl;
-    } while (check = false);
+    } while (!check);
 }
 void Add_Cashier(Manager &Admin)
 {
@@ -271,7 +271,7 @@ void Remove_Patient(Manager &Admin)
             cout << "Xoa tai khoan thanh cong." << endl;
         else
             cout << "Xoa tai khoan that bai." << endl;
-    } while (check = false);
+    } while (!check);
 }
 void Doctor_Workspace(Account &acc)
 {
@@ -721,7 +721,7 @@ void Change_File_Schedule(Schedule A[], const Doctor &tmp, string &date_m_y)
                 getline(file, line);
                 String_processing(A[i].Name);
                 String_processing(A[i].About);
-                tmp_file << A[i].Time_w << " " << A[i].ID_person << " " << A[i].Name << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << Extral_Status(A[i].Status) << endl;
+                tmp_file << A[i].Time_w << " " << A[i].ID_person << " " << A[i].Name << " " << A[i].Combo << " " << A[i].Medical << " " << A[i].About << " " << A[i].Status << endl;
             }
         }
     }
@@ -1268,16 +1268,20 @@ void Show_Schedule(Patient &tmp,vector <string> &List_Date , vector <Schedule> &
         if (calculateDayDifference(List_Date[STT-1],getCurrentDate()) <= 1) {
             cout << "Khong the huy lich hen truoc 1 ngay!" << endl;
         } else {
+
+            /* */
             List_Date.erase(List_Date.begin()+STT);
             List_Schedule.erase(List_Schedule.begin()+STT);
 
             /* */
-            string filename = "Patient/Schedule/"+to_string(tmp.get_ID()) +".txt";
+            filename = "Patient/Schedule/"+to_string(tmp.get_ID()) +".txt";
             ofstream file(filename);
             for (int i = 0; i < List_Date.size(); i++) {
             file << List_Date[i] <<" "<<List_Schedule[i].Time_w <<" " << List_Schedule[i].ID_person <<" " <<List_Schedule[i].Name <<" "<<List_Schedule[i].Combo <<" " <<List_Schedule[i].Medical <<" "<<List_Schedule[i].About <<" "<<List_Schedule[i].Status << endl;
             }
             file.close();
+            ofstream file(filename);
+        
             cout << "Huy lich hen thanh cong." << endl;
         }
         break;
@@ -1348,4 +1352,24 @@ void Change_File_infor_Patient(Patient &tmp)
     file << tmp.get_Address() << endl;
     file << tmp.get_Gender() << endl;
     file.close();
+}
+
+void Update_Schedule_Doctor(Schedule &schedule, string Date , unsigned int ID_Doctor){
+    vector <schedule> List_Schedule;
+    string line;
+    string file_name ="Doctor/Schedule/"+to_string(ID_Doctor);
+    ifstream file(filename);
+    
+    while(getline(file,line)){
+        if (line == Date){
+            for (int i = 1; i< = Sokhunggio; i++){
+                file >>
+            }
+        }
+
+    }
+
+
+
+
 }
