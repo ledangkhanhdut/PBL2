@@ -779,11 +779,11 @@ void View_Schedule(const Doctor &tmp)
             Show_Schedule(List_Schedule[A[choice2]]);
             //    if (tmp_Schedule != List_Schedule[A[choice2]])
             Update_File_Sche_Patient(List_Schedule[A[choice2]], date_m_y, tmp);
+            Change_File_Schedule(List_Schedule, tmp, date_m_y);
             STT = 0;
             break;
         case 2:
             /*Luu lich lam viec moi lai vao file */
-            Change_File_Schedule(List_Schedule, tmp, date_m_y);
             return;
             break;
         default:
@@ -841,7 +841,7 @@ void Show_Schedule(Schedule &p)
     {
         system("cls");
         cout << left << setw(10) << "Time" << setw(20) << "Ten BN" << setw(10) << "Goi" << setw(20) << "Thuoc" << setw(40) << "Chi Tiet Kham" << setw(5) << "Trang thai" << endl;
-        cout << left << setw(10) << p.Time_w << setw(20) << p.Name << setw(10) << p.Combo << setw(20) << p.Medical << setw(40) << p.About << setw(5) << p.Status << endl;
+        cout << left << setw(10) << p.Time_w << setw(20) << p.Name << setw(10) << p.Combo << setw(20) <<  p.Medical << setw(40) << p.About << setw(5) << Extral_Status(p.Status)  << endl;
         cout << "1.Thay doi trang thai." << endl;
         cout << "2.Thay chi tiet kham." << endl;
         cout << "3.Thay doi thuoc." << endl;
