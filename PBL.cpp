@@ -1320,7 +1320,6 @@ void Patient_Workspace(Account &acc)
         cout << "|   4. Thoat                                                   |" << endl;
         cout << "|   Hay nhap yeu cau cua ban:                                  |" << endl;
         cout << "+--------------------------------------------------------------+" << endl;
-
         cout << "\033[2A";
         cout << "\033[30C";
         cin >> choice;
