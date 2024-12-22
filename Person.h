@@ -22,13 +22,13 @@ public:
     string get_Name() const;
     void set_Name(const string &);
     int get_Age() const;
-    void set_Age(int);
+    void set_Age(int);  
     string  get_Phone_Number() const;
     void  set_Phone_Number(const string &);
     string  get_Address() const ;
     void  set_Address(const string &);
     char get_Gender() const;
-    void   set_Gender(const char &);
+    void   set_Gender(const char &); 
     ~Person();
 };
 

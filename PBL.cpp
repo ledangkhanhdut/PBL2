@@ -11,6 +11,10 @@
 
 #define Sokhunggio 7
 #define file_Service "Service.txt"
+#define file_Medical "Medical.txt"
+#define file_Schedule "Schedule.txt"
+#define size_Error 5
+
 void Home();
 void Login();
 void Register();
@@ -1562,7 +1566,6 @@ void Patient_Workspace(Account &acc)
         cout << "|   4. Thoat                                                   |" << endl;
         cout << "|   Hay nhap yeu cau cua ban:                                  |" << endl;
         cout << "+--------------------------------------------------------------+" << endl;
-
         cout << "\033[2A";
         cout << "\033[30C";
         cin >> choice;
