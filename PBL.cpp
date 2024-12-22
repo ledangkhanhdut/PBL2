@@ -10,6 +10,10 @@
 
 #define Sokhunggio 7
 #define file_Service "Service.txt"
+#define file_Medical "Medical.txt"
+#define file_Schedule "Schedule.txt"
+#define size_Error 5
+
 void Home();
 void Login();
 void Register();
