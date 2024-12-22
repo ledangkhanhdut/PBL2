@@ -12,8 +12,7 @@ void Design(){
     cout << "|     	NGUYEN DINH HIEN	|   	    23T_NHAT1		 |" << endl;
     cout << "|     	LE DANG KHANH        	|   	    23T_NHAT1  		 |" << endl;
     cout << "|_______________________________|________________________________|" << endl;
-    
-    cout << endl;
+
 }
 
 bool isNumeric(const string &str)

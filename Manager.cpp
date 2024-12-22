@@ -69,8 +69,7 @@ bool Manager::Add_Cashier(const string &user, const string &pass){
     Account tmp;
     check = tmp.Register(user,pass,3);
     if (!check) return false;
-   /*Tao file thong tin va lich cho benh nhan*/
-    string filename = "Cashier/information/"+to_string(tmp.get_Id()) + ".txt";
+    string filename = "Cashier/"+to_string(tmp.get_Id()) + ".txt";
     ofstream file(filename);
     file.close();
     return true;
@@ -82,7 +81,7 @@ bool check;
     if (!check){
         return false;
     }
-    string file_infor = "Cashier/information/" + to_string(tmp.get_Id()) + ".txt";
+    string file_infor = "Cashier/" + to_string(tmp.get_Id()) + ".txt";
     Delete_File(file_infor);
  return true;
 }
