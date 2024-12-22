@@ -16,12 +16,15 @@ bool Account::Login(const string &User, const string &Pass)
         ++tmp;
     }
     in_file.close();
+
+
     for (int i = 0; i < Size; i++)
         if (List_Acc[i].Compare(User, Pass))
         {
             (*this) = List_Acc[i];
             return true;
         }
+
     delete[] List_Acc;
     return false;
 }
@@ -41,6 +44,24 @@ Account::Account(const Account &p)
     this->Pass = p.Pass;
     this->Role = p.Role;
 }
+// int binarySearchDiscrepancy(vector<Account>& List_Acc, int Size) {
+//     int left = 1;
+//     int right = Size - 1;
+    
+//     while (left <= right) {
+//         int mid = left + (right - left) / 2;
+
+//         if (List_Acc[mid].ID - List_Acc[mid - 1].ID != 1) {
+//             return mid;
+//         } else {
+//             if (List_Acc[mid].ID - List_Acc[mid - 1].ID == 1) {
+//                 left = mid + 1;
+//             }
+//         }
+//     }
+//     return -1;
+// }
+
 bool Account::Register(const string &username, const string &pass, int role)
 {
     ifstream in_file(file_Acc);
@@ -66,6 +87,8 @@ bool Account::Register(const string &username, const string &pass, int role)
             break;
         }
 
+
+ 
     if (tmp == 0)
     {
         List_Acc.push_back(Account(List_Acc.back().get_Id() + 1, username, pass, role));
@@ -77,6 +100,7 @@ bool Account::Register(const string &username, const string &pass, int role)
         (*this) = new_Acc;
         List_Acc.insert(List_Acc.begin() + tmp, new_Acc);
     }
+
     Size++;
     ofstream out_file(file_Acc);
     out_file << Size << std::endl;

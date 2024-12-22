@@ -64,11 +64,27 @@ bool Manager::Remove_Doctor(const string &user)
     Delete_File(file_schedule);
  return true;
 }
-bool Manager::Add_Cashier(const string &id){
-    
+bool Manager::Add_Cashier(const string &user, const string &pass){
+    bool check;
+    Account tmp;
+    check = tmp.Register(user,pass,3);
+    if (!check) return false;
+   /*Tao file thong tin va lich cho benh nhan*/
+    string filename = "Cashier/information/"+to_string(tmp.get_Id()) + ".txt";
+    ofstream file(filename);
+    file.close();
+    return true;
 }
-bool Manager::Remove_Cashier(const string &id){
-     
+bool Manager::Remove_Cashier(const string &user){
+bool check;
+    Account tmp;
+    check = tmp.Remove_Acc(user,3);
+    if (!check){
+        return false;
+    }
+    string file_infor = "Cashier/information/" + to_string(tmp.get_Id()) + ".txt";
+    Delete_File(file_infor);
+ return true;
 }
 bool Manager::Add_Patient(const string &user,const string &pass){
     bool check;

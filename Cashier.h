@@ -1,12 +1,12 @@
 #include "Person.h"
 
-class Cashier
+class Cashier : public Person
 {
-private:
-
 public:
-    void Out_Bill();
-    void Total_Invoices();
+    Cashier(unsigned int = 9999 , const string & = "", int = 0, const string & = "", const string & = "", char = ' ');
+    Cashier(const Cashier &);
     ~Cashier();
 };
+
+
 

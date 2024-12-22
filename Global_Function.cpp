@@ -112,18 +112,18 @@ void  String_processing(string &str){
     
     str = str.substr(start, end - start + 1);  // Cắt chuỗi để loại bỏ khoảng trắng thừa
 
-    // Chuyển chữ cái đầu tiên của mỗi từ thành chữ hoa và các chữ còn lại thành chữ thường
-    bool newWord = true;
-    for (char &c : str) {
-        if (isspace(c)) {
-            newWord = true;  // Đánh dấu từ mới
-        } else if (newWord) {
-            c = toupper(c);  // Chữ cái đầu tiên của từ chuyển thành hoa
-            newWord = false;
-        } else {
-            c = tolower(c);  // Các chữ cái còn lại trong từ chuyển thành thường
-        }
-    }
+    // // Chuyển chữ cái đầu tiên của mỗi từ thành chữ hoa và các chữ còn lại thành chữ thường
+    // bool newWord = true;
+    // for (char &c : str) {
+    //     if (isspace(c)) {
+    //         newWord = true;  // Đánh dấu từ mới
+    //     } else if (newWord) {
+    //         c = toupper(c);  // Chữ cái đầu tiên của từ chuyển thành hoa
+    //         newWord = false;
+    //     } else {
+    //         c = tolower(c);  // Các chữ cái còn lại trong từ chuyển thành thường
+    //     }
+    // }
 
     int i = 1;
      while (i<str.size())
