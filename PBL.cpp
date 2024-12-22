@@ -39,6 +39,12 @@ void Change_About(Schedule &);
 void Change_Medical(Schedule &);
 void Change_Status(Schedule &);
 
+void Cashier_Workspace(Account &);
+void Export_Bill();
+int &Total_Money(const String&);
+void Total_Day();
+void Update_Infor_Cashier(Cashier &, Account &);
+
 void Patient_Workspace(Account &);
 void Read_information_Patient(Patient &);
 void Booking_Schedule(Patient &);
@@ -1365,159 +1371,178 @@ void Update_File_Schedule_Patient(Schedule p, string Date, Doctor doctor)
     file2.close();
 }
 
-// void Cashier_Workspace(Account &acc){
-//     int choice;
-//     Cashier tmp;
-//     tmp.set_Id(acc.get_Id());
-//     Read_information_Cashier(Tmp);
-//     do {
-//         cout << "+--------------------------------------------------------------+" << endl;
-//         cout << "|                    GIAO DIEN LAM VIEC                        |" << endl;
-//         cout << "+--------------------------------------------------------------+" << endl;
-//         cout << "|   1. Xuat hoa don                                            |" << endl;
-//         cout << "|   2. Thong ke trong ngay                                     |" << endl;
-//         cout << "|   3. Cap nhat thong tin                                      |" << endl;
-//         cout << "|   4. Thoat                                                   |" << endl;
-//         cout << "|   Hay nhap yeu cau cua ban:                                  |" << endl;
-//         cout << "+--------------------------------------------------------------+" << endl;
-//         cout << "\033[2A";
-//         cout << "\033[30C";
-//         cin >> choice;
-//          switch (choice)
-//          {
-//          case 1:
-//             Export_Bill();
-//             break;
-//          case 2:
-//             Total_Day();
-//             break;
-//          case 3:
-//             Update_Infor_Cashier(tmp);
-//             break;
-//         case 4:
-//         return;
-//         default:
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         cout << "|               Nhap sai yeu cau! Hay nhap lai.               |" << endl;
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         break;
-//          }
+void Cashier_Workspace(Account &acc){
+    int choice;
+    Cashier tmp;
+    tmp.set_Id(acc.get_Id());
+    Read_information_Cashier(Tmp);
+    do {
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "|                    GIAO DIEN LAM VIEC                        |" << endl;
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "|   1. Xuat hoa don                                            |" << endl;
+        cout << "|   2. Thong ke trong ngay                                     |" << endl;
+        cout << "|   3. Cap nhat thong tin                                      |" << endl;
+        cout << "|   4. Thoat                                                   |" << endl;
+        cout << "|   Hay nhap yeu cau cua ban:                                  |" << endl;
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "\033[2A";
+        cout << "\033[30C";
+        cin >> choice;
+         switch (choice)
+         {
+         case 1:
+            Export_Bill();
+            break;
+         case 2:
+            Total_Day();
+            break;
+         case 3:
+            Update_Infor_Cashier(tmp);
+            break;
+        case 4:
+        return;
+        default:
+        cout << "+-------------------------------------------------------------+" << endl;
+        cout << "|               Nhap sai yeu cau! Hay nhap lai.               |" << endl;
+        cout << "+-------------------------------------------------------------+" << endl;
+        Sleep(2000);
+        break;
+         }
 
-//     } while(choice != 4);
-// }
-// void Export_Bill(){
-//     // unsigned int ID;
-//     // int Age;
-//     // string Name,NumberPhone,Address,str_Gender;
-//     // char Gender;
-//     // Schedule tmp_Schedule;
-//     // string filename,day,filename2;
-//     // cout << "+-------------------------------------------------------------+" << endl;
-//     // cout << "| Nhap ma benh nhan muon xuat hoa don:                        |" << endl;
-//     // cout << "+-------------------------------------------------------------+" << endl;
-//     // cout << "\033[2A\033[28C";
-//     // cin >> ID;
-//     // filename ="Patient/Schedule/"+to_string(ID) +".txt";
-//     // ifstream file(filename);
-//     // while(file >> day){
-//     //     if (day != getCurrentDate()) {
-//     //         file >> tmp_Schedule.Time_w >> tmp_Schedule.ID_person >> tmp_Schedule.Name >> tmp_Schedule.Medical >> tmp_Schedule.About >> tmp_Schedule.Status;
-//     //         break;
-//     //     }
-//     // getline(file,day);
-//     // }
-//     // file.close();
-//     // removeDashes(tmp_Schedule.Name);
-//     // removeDashes(tmp_Schedule.About);
-//     // filename = "Patient/Information/"+to_string(ID) +".txt";
-//     // ifstream file(filename);
-//     // file >> ID >> Name >> Age >> NumberPhone >> Address >> Gender;
-//     // file.close();
-//     // if (Gender == 'G') str_Gender ="Nam" else str_Gender = "Nu";
-//     // filename2 = "Bill/"+getCurrentDate() +"-"+ Name +".txt";
-//     // removeDashes(Name);
-//     // ofstream file2(filename2);
-//     //     cout << "+--------------------------------------------------------------+" << endl;
-//     //     cout << "|                         HOA DON                              |" << endl;
-//     //     cout << "+--------------------------------------------------------------+" << endl;
-//     //     cout << "|   Benh nhan: "<<left<<setw(20) <<Name    <<"                 |" << endl;
-//     //     cout << "|   Gioi tinh: "<<left<<setw(10)<<str_Gender <<"Tuoi :" <<setw(5) << Age  <<"    |" << endl;
-//     //     cout << "|   Bac si   : "<<left<<setw(20)<< tmp_Schedule.Name <<"                  |" << endl;
-//     //     cout << "|--------------------------------------------------------------|" << endl;
-//     //     cout << "|   Goi Dich Vu        |    So Luong    |      Thanh Tien      |" << endl;
-//     //     cout << "+--------------------------------------------------------------+" << endl;
-//     //     cout << "|                                       |Tong: "<< Total_Money "|" << endl;
-//     //     file2 << "+--------------------------------------------------------------+" << endl;
-// }
-// void Total_Day(){
-// }
-// void Total_Month(){
+    } while(choice != 4);
+}
+void Export_Bill(){
+    unsigned int ID;
+    int Age;
+    string Name,NumberPhone,Address,str_Gender;
+    char Gender;
+    Schedule tmp_Schedule;
+    string filename,day,filename2;
+    cout << "+-------------------------------------------------------------+" << endl;
+    cout << "| Nhap ma benh nhan muon xuat hoa don:                        |" << endl;
+    cout << "+-------------------------------------------------------------+" << endl;
+    cout << "\033[2A\033[28C";
+    cin >> ID;
+    filename ="Patient/Schedule/"+to_string(ID) +".txt";
+    ifstream file(filename);
+    while(file >> day){
+        if (day == getCurrentDate()) {
+            file >> tmp_Schedule.Time_w >> tmp_Schedule.ID_person >> tmp_Schedule.Name >> tmp_Schedule.Medical >> tmp_Schedule.About >> tmp_Schedule.Status;
+            break;
+        }
+    getline(file,day);
+    }
 
-// }
-// void Update_Infor_Cashier(Cashier &tmp, Account &acc)
-// {
-//     int choice = 0;
-//     do
-//     {
-//         system("cls");
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         cout << "|                   Cap Nhat Thong Tin                        |" << endl;
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         cout << "| 1. Doi mat khau                                             |" << endl;
-//         cout << "| 2. Cap nhat ho va ten                                       |" << endl;
-//         cout << "| 3. Cap nhat tuoi                                            |" << endl;
-//         cout << "| 4. Cap nhat gioi tinh                                       |" << endl;
-//         cout << "| 5. Cap nhat so dien thoai                                   |" << endl;
-//         cout << "| 6. Cap nhat dia chi                                         |" << endl;
-//         cout << "| 7. Thoat                                                    |" << endl;
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         cout << "| Hay nhap yeu cau cua ban:                                   |" << endl;
-//         cout << "+-------------------------------------------------------------+" << endl;
-//         cout << "\033[2A\033[28C";
-//         cin >> choice;
-//         switch (choice)
-//         {
-//         case 1:
-//             change_Pass(acc);
-//             break;
-//         case 2:
-//             update_Name(tmp);
-//             break;
-//         case 3:
-//             update_Age(tmp);
-//             break;
-//         case 4:
-//             update_Gender(tmp);
-//             break;
-//         case 5:
-//             update_Phone(tmp);
-//             break;
-//         case 6:
-//             update_Address(tmp);
-//             break;
-//         case 7:
-//             Update_File_infor_Cashier(tmp);
-//             return;
-//         default:
-//             cout << "+-------------------------------------------------------------+" << endl;
-//             cout << "|           Yeu cau khong hop le! Vui long nhap lai.          |" << endl;
-//             cout << "+-------------------------------------------------------------+" << endl;
-//             break;
-//         }
+    file.close();
+    removeDashes(tmp_Schedule.Name);
+    removeDashes(tmp_Schedule.About);
+    filename = "Patient/Information/"+to_string(ID) +".txt";
+    ifstream file2(filename);
+    file2 >> ID >> Name >> Age >> NumberPhone >> Address >> Gender;
+    file2.close();
+    if (Gender == 'G') str_Gender ="Nam" else str_Gender = "Nu";
+    filename2 = "Bill/"+getCurrentDate() +"-"+ Name +".txt";
+    removeDashes(Name);
+    ofstream file2(filename2);
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "|                         HOA DON                              |" << endl;
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "|   Benh nhan: "<<left<<setw(20) <<Name    <<"                 |" << endl;
+        cout << "|   Gioi tinh: "<<left<<setw(10)<<str_Gender <<"Tuoi :" <<setw(5) << Age  <<"    |" << endl;
+        cout << "|   Bac si   : "<<left<<setw(20)<< tmp_Schedule.Name <<"                  |" << endl;
+        cout << "|--------------------------------------------------------------|" << endl;
+        cout << "|   Goi Dich Vu        |    So Luong    |      Thanh Tien      |" << endl;
+        cout << "+--------------------------------------------------------------+" << endl;
+        cout << "|                                       |Tong: "<< Total_Money(tmp_Schedule.Combo) "|" << endl;
+        file2 << "+--------------------------------------------------------------+" << endl;
+}
+int  &Total_Money(const string& combo) {
+    char combo_cstr[combo.length() + 1];
+    strcpy(combo_cstr, combo.c_str());
 
-//     } while (choice != 7);
-// }
-// void Update_File_infor_Cashier(Cashier &){
-//     string filename = "Cashier/information/" + to_string(tmp.get_ID()) + ".txt";
-//     ofstream file(filename);
-//     file << tmp.get_ID() << endl;
-//     file << tmp.get_Name() << endl;
-//     file << tmp.get_Age() << endl;
-//     file << tmp.get_Phone_Number() << endl;
-//     file << tmp.get_Address() << endl;
-//     file << tmp.get_Gender() << endl;
-//     file.close();
-// }
+    const int MAX_SIZE = 100;
+    int numbers[MAX_SIZE];
+    int index = 0,money = 0;
+
+    char* token = strtok(combo_cstr, "-");
+    while (token != nullptr) {
+        numbers[index++] = atoi(token);
+        token = strtok(nullptr, "-");
+    }
+
+    for (int i = 0; i < index; ++i) {
+        money+= numbers[i]*;
+    }
+}
+
+void Total_Day(){
+
+}
+void Update_Infor_Cashier(Cashier &tmp, Account &acc)
+{
+    int choice = 0;
+    do
+    {
+        system("cls");
+        cout << "+-------------------------------------------------------------+" << endl;
+        cout << "|                   Cap Nhat Thong Tin                        |" << endl;
+        cout << "+-------------------------------------------------------------+" << endl;
+        cout << "| 1. Doi mat khau                                             |" << endl;
+        cout << "| 2. Cap nhat ho va ten                                       |" << endl;
+        cout << "| 3. Cap nhat tuoi                                            |" << endl;
+        cout << "| 4. Cap nhat gioi tinh                                       |" << endl;
+        cout << "| 5. Cap nhat so dien thoai                                   |" << endl;
+        cout << "| 6. Cap nhat dia chi                                         |" << endl;
+        cout << "| 7. Thoat                                                    |" << endl;
+        cout << "+-------------------------------------------------------------+" << endl;
+        cout << "| Hay nhap yeu cau cua ban:                                   |" << endl;
+        cout << "+-------------------------------------------------------------+" << endl;
+        cout << "\033[2A\033[28C";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            change_Pass(acc);
+            break;
+        case 2:
+            update_Name(tmp);
+            break;
+        case 3:
+            update_Age(tmp);
+            break;
+        case 4:
+            update_Gender(tmp);
+            break;
+        case 5:
+            update_Phone(tmp);
+            break;
+        case 6:
+            update_Address(tmp);
+            break;
+        case 7:
+            Update_File_infor_Cashier(tmp);
+            return;
+        default:
+            cout << "+-------------------------------------------------------------+" << endl;
+            cout << "|           Yeu cau khong hop le! Vui long nhap lai.          |" << endl;
+            cout << "+-------------------------------------------------------------+" << endl;
+            break;
+        }
+
+    } while (choice != 7);
+}
+void Update_File_infor_Cashier(Cashier &){
+    string filename = "Cashier/information/" + to_string(tmp.get_ID()) + ".txt";
+    ofstream file(filename);
+    file << tmp.get_ID() << endl;
+    file << tmp.get_Name() << endl;
+    file << tmp.get_Age() << endl;
+    file << tmp.get_Phone_Number() << endl;
+    file << tmp.get_Address() << endl;
+    file << tmp.get_Gender() << endl;
+    file.close();
+}
 
 void Patient_Workspace(Account &acc)
 {
