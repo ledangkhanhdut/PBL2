@@ -130,6 +130,7 @@ void  String_processing(string &str){
       if (str[i] == ' ' && str[i-1] ==' ') str.erase(i,1) ; else i++;
      
      }
+     
      for (int i = 0; i < str.size(); i++)
      if (str[i] == ' ')
             tmp_string = tmp_string + '-';

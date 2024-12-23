@@ -44,23 +44,6 @@ Account::Account(const Account &p)
     this->Pass = p.Pass;
     this->Role = p.Role;
 }
-// int binarySearchDiscrepancy(vector<Account>& List_Acc, int Size) {
-//     int left = 1;
-//     int right = Size - 1;
-    
-//     while (left <= right) {
-//         int mid = left + (right - left) / 2;
-
-//         if (List_Acc[mid].ID - List_Acc[mid - 1].ID != 1) {
-//             return mid;
-//         } else {
-//             if (List_Acc[mid].ID - List_Acc[mid - 1].ID == 1) {
-//                 left = mid + 1;
-//             }
-//         }
-//     }
-//     return -1;
-// }
 
 bool Account::Register(const string &username, const string &pass, int role)
 {
@@ -86,8 +69,6 @@ bool Account::Register(const string &username, const string &pass, int role)
             tmp = i;
             break;
         }
-
-
  
     if (tmp == 0)
     {

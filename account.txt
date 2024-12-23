@@ -1,9 +1,6 @@
-8
+5
 1000 admin admin 1
 1001 bacsi bacsi 2
 1002 benhnhan benhnhan 4
-1003 be be 4
-1004 bacsi2 bacsi2 2
 1005 thuky thuky 3
-1006 benhnhan2 benhnhan2 4
 1007 thungan thungan 3
